@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <title>快速批量生成 pHash (多线程)</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        max-width: 900px;
+        margin: 2rem auto;
+        padding: 1rem;
+      }
+      .progress-bar {
+        width: 100%;
+        height: 30px;
+        background: #f0f0f0;
+        border-radius: 15px;
+        overflow: hidden;
+        margin: 1rem 0;
+      }
+      .progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #4caf50, #8bc34a);
+        transition: width 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+      }
+      #results {
+        margin-top: 2rem;
+        border: 1px solid #ccc;
+        padding: 1rem;
+        background: #f9f9f9;
+        max-height: 300px;
+        overflow-y: auto;
+      }
+      .log-item {
+        padding: 0.3rem;
+        border-bottom: 1px solid #eee;
+        font-family: monospace;
+        font-size: 11px;
+      }
+      button {
+        padding: 0.8rem 1.5rem;
+        font-size: 16px;
+        cursor: pointer;
+        background: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+      }
+      button:hover {
+        background: #0056b3;
+      }
+      button:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+      }
+      #json-output {
+        margin-top: 1rem;
+        padding: 1rem;
+        background: #2d2d2d;
+        color: #f8f8f2;
+        border-radius: 4px;
+        font-family: monospace;
+        font-size: 12px;
+        white-space: pre-wrap;
+        max-height: 300px;
+        overflow-y: auto;
+      }
+      .stats {
+        display: flex;
+        gap: 2rem;
+        margin: 1rem 0;
+        font-size: 14px;
+      }
+      .stat-item {
+        padding: 0.5rem 1rem;
+        background: #e3f2fd;
+        border-radius: 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>⚡ 快速批量生成 RGB 三通道 pHash (多线程)</h2>
+    <p>
+      使用多个 Web Worker 并行处理，速度提升 4-8 倍！<br />
+      配置: 中心裁剪 75%, 标准尺寸 128×128, 输出 192 位 16 进制
+    </p>
+
+    <input
+      type="file"
+      id="file-input"
+      multiple
+      accept="image/*"
+      style="display: none"
+    />
+    <button
+      id="select-btn"
+      onclick="document.getElementById('file-input').click()"
+    >
+      选择图片文件
+    </button>
+
+    <div class="stats">
+      <div class="stat-item">总数: <strong id="total-count">0</strong></div>
+      <div class="stat-item">已完成: <strong id="done-count">0</strong></div>
+      <div class="stat-item">速度: <strong id="speed">0</strong> 张/秒</div>
+      <div class="stat-item">预计剩余: <strong id="eta">--</strong></div>
+    </div>
+
+    <div class="progress-bar">
+      <div class="progress-fill" id="progress-fill" style="width: 0%">0%</div>
+    </div>
+
+    <div id="results"></div>
+    <div id="json-output"></div>
+
+    <script>
+      const fileInput = document.getElementById("file-input");
+      const selectBtn = document.getElementById("select-btn");
+      const resultsDiv = document.getElementById("results");
+      const jsonOutput = document.getElementById("json-output");
+      const progressFill = document.getElementById("progress-fill");
+      const totalCountEl = document.getElementById("total-count");
+      const doneCountEl = document.getElementById("done-count");
+      const speedEl = document.getElementById("speed");
+      const etaEl = document.getElementById("eta");
+
+      // 创建 Web Worker 代码
+      const workerCode = `
+        self.onmessage = function(e) {
+          const { redPixels, greenPixels, bluePixels, size, levelId } = e.data;
+          
+          const hashR = calculatePHash(redPixels, size);
+          const hashG = calculatePHash(greenPixels, size);
+          const hashB = calculatePHash(bluePixels, size);
+          
+          const hash = hashR + hashG + hashB;
+          self.postMessage({ hash, levelId });
+        };
+
+        function calculatePHash(pixels, size) {
+          const dctData = applyDCT(pixels, size);
+          
+          const rows = 16;
+          const cols = 16;
+          let lowFreq = [];
+          for (let u = 0; u < rows; u++) {
+            for (let v = 0; v < cols; v++) {
+              lowFreq.push(dctData[u * size + v]);
+            }
+          }
+
+          const average = lowFreq.reduce((a, b) => a + b, 0) / lowFreq.length;
+          const binaryHash = lowFreq.map(v => (v > average ? "1" : "0")).join("");
+          
+          let hexHash = "";
+          for (let i = 0; i < binaryHash.length; i += 4) {
+            const chunk = binaryHash.substr(i, 4);
+            hexHash += parseInt(chunk, 2).toString(16);
+          }
+          
+          return hexHash;
+        }
+
+        function applyDCT(f, N) {
+          const F = new Float32Array(N * N);
+          const pi_N = Math.PI / (2 * N);
+
+          for (let u = 0; u < N; u++) {
+            for (let v = 0; v < N; v++) {
+              let sum = 0;
+              for (let x = 0; x < N; x++) {
+                for (let y = 0; y < N; y++) {
+                  sum += f[x * N + y] * Math.cos((2 * x + 1) * u * pi_N) * Math.cos((2 * y + 1) * v * pi_N);
+                }
+              }
+              const alphaU = u === 0 ? Math.sqrt(1 / N) : Math.sqrt(2 / N);
+              const alphaV = v === 0 ? Math.sqrt(1 / N) : Math.sqrt(2 / N);
+              F[u * N + v] = alphaU * alphaV * sum;
+            }
+          }
+          return F;
+        }
+      `;
+
+      // 创建多个 Worker (根据 CPU 核心数)
+      const workerCount = navigator.hardwareConcurrency || 4;
+      const workers = [];
+      const blob = new Blob([workerCode], { type: "application/javascript" });
+
+      for (let i = 0; i < workerCount; i++) {
+        workers.push({
+          worker: new Worker(URL.createObjectURL(blob)),
+          busy: false,
+        });
+      }
+
+      const hashes = {};
+      let processedCount = 0;
+      let totalFiles = 0;
+      let startTime = 0;
+      let taskQueue = [];
+
+      fileInput.onchange = async (e) => {
+        const files = Array.from(e.target.files);
+        totalFiles = files.length;
+        processedCount = 0;
+        startTime = Date.now();
+
+        totalCountEl.textContent = totalFiles;
+        doneCountEl.textContent = 0;
+        selectBtn.disabled = true;
+
+        resultsDiv.innerHTML = "<h3>处理中...</h3>";
+        jsonOutput.innerHTML = "";
+
+        // 预加载所有图片到队列
+        taskQueue = [];
+        for (const file of files) {
+          taskQueue.push(file);
+        }
+
+        // 启动所有 Worker
+        workers.forEach((w) => processNext(w));
+
+        fileInput.value = "";
+      };
+
+      function processNext(workerObj) {
+        if (taskQueue.length === 0) {
+          workerObj.busy = false;
+          // 检查是否全部完成
+          if (processedCount === totalFiles) {
+            displayJSON();
+            selectBtn.disabled = false;
+          }
+          return;
+        }
+
+        const file = taskQueue.shift();
+        workerObj.busy = true;
+
+        const levelId = file.name.replace(/\.(jpg|jpeg|png|gif)$/i, "");
+        const reader = new FileReader();
+
+        reader.onload = (event) => {
+          const img = new Image();
+          img.onload = () => {
+            processImage(img, levelId, workerObj);
+          };
+          img.src = event.target.result;
+        };
+
+        reader.readAsDataURL(file);
+      }
+
+      function processImage(img, levelId, workerObj) {
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+        const size = 128;
+        canvas.width = size;
+        canvas.height = size;
+
+        // 自适应裁剪
+        const sw = img.width;
+        const sh = img.height;
+        const cropRatio = 0.75;
+        const cropW = sw * cropRatio;
+        const cropH = sh * cropRatio;
+        const sx = (sw - cropW) / 2;
+        const sy = (sh - cropH) / 2;
+
+        ctx.drawImage(img, sx, sy, cropW, cropH, 0, 0, size, size);
+
+        // 获取 RGB 三通道数据
+        const imageData = ctx.getImageData(0, 0, size, size).data;
+        const redPixels = new Float32Array(size * size);
+        const greenPixels = new Float32Array(size * size);
+        const bluePixels = new Float32Array(size * size);
+
+        for (let i = 0; i < imageData.length; i += 4) {
+          const idx = i / 4;
+          redPixels[idx] = imageData[i];
+          greenPixels[idx] = imageData[i + 1];
+          bluePixels[idx] = imageData[i + 2];
+        }
+
+        // 发送给 Worker
+        workerObj.worker.postMessage({
+          redPixels: redPixels,
+          greenPixels: greenPixels,
+          bluePixels: bluePixels,
+          size: size,
+          levelId: levelId,
+        });
+      }
+
+      // 设置所有 Worker 的消息处理
+      workers.forEach((workerObj) => {
+        workerObj.worker.onmessage = function (e) {
+          const { hash, levelId } = e.data;
+
+          hashes[levelId] = hash;
+          processedCount++;
+
+          // 更新进度
+          const progress = (processedCount / totalFiles) * 100;
+          progressFill.style.width = progress + "%";
+          progressFill.textContent = Math.round(progress) + "%";
+
+          doneCountEl.textContent = processedCount;
+
+          // 计算速度和预计时间
+          const elapsed = (Date.now() - startTime) / 1000;
+          const speed = (processedCount / elapsed).toFixed(1);
+          speedEl.textContent = speed;
+
+          const remaining = totalFiles - processedCount;
+          const eta = remaining / speed;
+          etaEl.textContent = eta > 0 ? Math.ceil(eta) + "秒" : "完成";
+
+          // 显示日志
+          const logItem = document.createElement("div");
+          logItem.className = "log-item";
+          logItem.textContent = `✓ [${processedCount}/${totalFiles}] ${levelId}`;
+          resultsDiv.appendChild(logItem);
+          resultsDiv.scrollTop = resultsDiv.scrollHeight;
+
+          // 处理下一个任务
+          processNext(workerObj);
+        };
+      });
+
+      function displayJSON() {
+        // 按 level 数字排序
+        const sortedHashes = Object.keys(hashes)
+          .sort((a, b) => {
+            const numA = parseInt(a.replace(/\D/g, "")) || 0;
+            const numB = parseInt(b.replace(/\D/g, "")) || 0;
+            return numA - numB;
+          })
+          .reduce((obj, key) => {
+            obj[key] = hashes[key];
+            return obj;
+          }, {});
+
+        const json = JSON.stringify(sortedHashes, null, 2);
+        jsonOutput.innerHTML = `<strong>✅ 生成完成！(复制或自动下载)</strong>\n\n${json}`;
+
+        // 自动下载 JSON
+        const dataStr =
+          "data:text/json;charset=utf-8," + encodeURIComponent(json);
+        const downloadAnchor = document.createElement("a");
+        downloadAnchor.setAttribute("href", dataStr);
+        downloadAnchor.setAttribute("download", "level-hashes.json");
+        downloadAnchor.click();
+
+        console.log(`✅ 完成！共处理 ${Object.keys(hashes).length} 张图片`);
+      }
+    </script>
+  </body>
+</html>

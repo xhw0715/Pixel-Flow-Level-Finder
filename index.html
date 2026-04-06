@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Pixel Flow Level Finder</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        max-width: 800px;
+        margin: 2rem auto;
+        line-height: 1.6;
+        background: #f4f4f9;
+      }
+      .container {
+        background: white;
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      #drop-zone {
+        border: 2px dashed #ccc;
+        padding: 3rem;
+        text-align: center;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+      #drop-zone:hover {
+        border-color: #666;
+        background: #fafafa;
+      }
+      .result-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem;
+        border-bottom: 1px solid #eee;
+      }
+      .distance-tag {
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-weight: bold;
+      }
+      .match {
+        background: #d4edda;
+        color: #155724;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>🔍 Find Your Pixel Flow Level (RGB 三通道 pHash)</h2>
+      <p>
+        Upload a screenshot to match it against our database (2000+ levels).
+        Using RGB 三通道 pHash (768-bit = 192 hex chars) for higher precision
+        and color distinction.
+      </p>
+
+      <div id="drop-zone">Click or Drag Screenshot Here</div>
+      <input type="file" id="file-input" hidden accept="image/*" />
+
+      <div id="results-anchor" style="margin-top: 2rem">
+        <h3>Best Matches:</h3>
+        <div id="results-list"></div>
+      </div>
+    </div>
+
+    <script>
+      // 模拟数据库数据 (Level ID : RGB 三通道 pHash，192 位 16 进制)
+      // 请使用 batch-phash.html 重新生成 RGB 三通道的 pHash 数据
+      const DB_HASHES = {
+        "level-1007":
+          "cae04787b91511c391a11211149c9824a230b01871c0d7033e27eaf14878231eb818ce01b91803c262e0c1e48760cf4207113389c061a156360068a00cc43410bc14d408fab842c5a0da42c28a60874247138b0e0803b0d0425035500dc01042",
+        "level-1008":
+          "e2625582320ac766f698a8d0858677695aa2a19a80b1d220a82100b57d1dde19e9cc41cd1a5bad666f92884349c7d79810f1b4265c2cf808e9192f531ed60e5fc8c4e2c05a73ea64661c2a21214c2788a05902c6559d5690a029a1010c000809",
+        "level-1009":
+          "85e0d403280f80002205a0023affc5543a2167d510802950bf406a03000d6800ad40d40322afc00000a5c0022afd65547ae10df7508023f0bf406a80800d6a80ab02f40a0229a20810a08802f6fd7651f3a0ddf5d080a640aa41a2aa808aa280",
+        "level-1010":
+          "8e1c8673b561938c8847a4abdad4896346858b9acc2aa8b1d4eba5a787a211448e1c4e71b5419384ac47a1a31ab8c8235f85ea8ace2228b9d6e1312786863144b518fa206888050892037b02955400198402c10044600090086000018c02048c",
+        "level-1011":
+          "e814d875269ea71b24098089028af8604870e8f85a56a8aa0606a5a90a2a869ea90dd8f00b06238d349a0a15229abdea12528e2371dc389ac72585216098cd25ad25a87109f669ad0adae254669a0d2212828d2629a83810e7aed64630dce925",
+        "level-1012":
+          "ccfa56310c88c9f24b351803da2511d32119b5328b26e7745f9cb4849afee2a49ce855023656e9b14e031089882e4182c5d885712b28047231f41ac012f0000198ece100b256e0214f3a10c08a2c1886e0d08671e2294c7225fc00c21af04001",
+        "level-1013":
+          "990d3182d201cb186e02660b0ca42a50e84b8a24718ce004fd481c8f21583d08e065ca6de2a4a89889901d603193b172b708a09c952030249f69528840c05ca6896de0e5ca648b5eadd0a79b1db3117ab16b90349584e02457405624427056a0",
+        "level-1014":
+          "f0c386a872d09a05022764d128e4880b300444641529440100008843663272b0a108823b076c803541ac04546d84988b190645e4f1080091022cfceb27727610d29000aadae4201521aa5064aaa1210a081484e4a4215080000aa94006c05285",
+        "level-1015":
+          "cc8a2cf0312023506855d525d2d2a9e0ce73443aa15566471661454ed09a2e34bc0dcc6011a020504c1cd4094080a9a0def00cba8136626706a5610fd0182e34bf0dcf641182143ad418d81964805aa0ce602cd86922db230f85018df2189c14",
+        "level-1016":
+          "d3f83747bf120acc2e0453a2d3c20d90cf4532200a85531b30a7d25800b09e40c1f83d4fbb32284c2c046126d1420d98cd4020300885511b20a7f51880b09e40d17fa53e2c0ea01a240fe10df05aad5a8c78b06821022107210fa42c2c008bc0",
+        "level-1017":
+          "f8ea6060a51805998e010f44a526896326b1a607d8bc281e83642468c2e15894f9ee7032d20416bbae2806412d70895a60b17285d984b81e8218249882804980f9e9802a5e54606ff46de0397258285a606bc9a59984bb06501a219801800980",
+        "level-1018":
+          "c861e1921e0082e10a601c4843a080918606d782818080050a21020220822189e861e99ae48006000a606e620e4061969e619e8165869e072247006210e691c988610e19e5850616e0666586464265999a69d86961831266e2661a6218669889",
+        "level-1019":
+          "9aa29f7863e86a995a00ba4104e11722320dd207cc54c561fb0b4dd00e877410ec42933867ee697b6c02348134e50527320cc6070894c9214b090cc0cd832100d8a3bd7a834ab49d880ffb41c4b10b27608dc8218c0ce0e1fb890fc4e2c70050",
+        "level-1020":
+          "818a849156102b802a807a0106e185ea81612980286200600060200080182801fffe8868ea00957a69158056a2057fa005eb817a02018084824479a090780081ff7e7a68aa05147a0155807e6a857e807fa194788411a4852a1679a1947a8581",
+        "level-1021":
+          "d68ae90d7949d52a755e862a2ca15990cbd99daa8c8180a08a902ab1dcc509808658e809e949423b6009061b696441e86699c081e28180a0d1b07a818c817ac091ea7a957e05552a563f013a7b8106257c99993aac938120b9232e1f86c029c0",
+        "level-1022":
+          "b006bc3ece19496831cec94029c970c68591001f322092a63141a0169aa96512a81a8c1a92215164349b89c48aa855de8331023f65328b863b61a9169a496513c47a897a9a85d8a4b41aa98492c4451a8b510097652202421360636b0b416101",
+        "level-1023":
+          "cd48bc7c6ca1e808e854a239b0073d3032e4da04ac6f42a253c0898006020210e98ae2c0ace10f5195da92b1b6037a3022e3ca54ad4be42a60c0888122030711e182e280a4c11fd395da12b0b6037a522a43ca54ad43a42ae0008081a0018701",
+        "level-1024":
+          "d19b3c6c6ef5504bc42412fb3c41e1069f5c1b20066c2920c5a467972ed2db48d093cc6cd690530b452406dba401e1201d0893a0e64ce028748020bd0c02c1489cc7c3b2d4001b1451eae400669c0583842893a0b400c43c2ec08022140880c8",
+        "level-1025":
+          "80ce05c95e84ee008e867ea6f811091c091225627a1ec0d26866cea0264a1b0484ea857878261a809b84f8a42b132a15229125690a2e86c22a6e988000439a148068850816a6fa7686ac4385e101039aa29e41e9182a8c12014f9a80084a9033",
+      };
+      const dropZone = document.getElementById("drop-zone");
+      const fileInput = document.getElementById("file-input");
+
+      // 使用 Blob 创建 inline worker，避免 file:// 协议限制
+      const workerCode = `
+        self.onmessage = function(e) {
+          const { redPixels, greenPixels, bluePixels, size } = e.data;
+          
+          // 分别计算 RGB 三个通道的 pHash
+          const hashR = calculatePHash(redPixels, size);
+          const hashG = calculatePHash(greenPixels, size);
+          const hashB = calculatePHash(bluePixels, size);
+          
+          // 组合成完整哈希
+          const hash = hashR + hashG + hashB;
+
+          self.postMessage({ hash });
+        };
+
+        function calculatePHash(pixels, size) {
+          // 1. 执行 DCT 变换
+          const dctData = applyDCT(pixels, size);
+          
+          // 2. 取左上角 16x16 区域 (256 位 pHash)
+          const rows = 16;
+          const cols = 16;
+          let lowFreq = [];
+          for (let u = 0; u < rows; u++) {
+            for (let v = 0; v < cols; v++) {
+              lowFreq.push(dctData[u * size + v]);
+            }
+          }
+
+          // 3. 计算均值
+          const average = lowFreq.reduce((a, b) => a + b, 0) / lowFreq.length;
+
+          // 4. 生成 256 位二进制哈希
+          const binaryHash = lowFreq.map(v => (v > average ? "1" : "0")).join("");
+          
+          // 5. 转换为 16 进制
+          let hexHash = "";
+          for (let i = 0; i < binaryHash.length; i += 4) {
+            const chunk = binaryHash.substr(i, 4);
+            hexHash += parseInt(chunk, 2).toString(16);
+          }
+          
+          return hexHash;
+        }
+
+        function applyDCT(f, N) {
+          const F = new Float32Array(N * N);
+          const pi_N = Math.PI / (2 * N);
+
+          for (let u = 0; u < N; u++) {
+            for (let v = 0; v < N; v++) {
+              let sum = 0;
+              for (let x = 0; x < N; x++) {
+                for (let y = 0; y < N; y++) {
+                  sum += f[x * N + y] * Math.cos((2 * x + 1) * u * pi_N) * Math.cos((2 * y + 1) * v * pi_N);
+                }
+              }
+              const alphaU = u === 0 ? Math.sqrt(1 / N) : Math.sqrt(2 / N);
+              const alphaV = v === 0 ? Math.sqrt(1 / N) : Math.sqrt(2 / N);
+              F[u * N + v] = alphaU * alphaV * sum;
+            }
+          }
+          return F;
+        }
+      `;
+
+      const blob = new Blob([workerCode], { type: "application/javascript" });
+      const worker = new Worker(URL.createObjectURL(blob));
+
+      dropZone.onclick = () => fileInput.click();
+      fileInput.onchange = (e) => handleImage(e.target.files[0]);
+
+      function handleImage(file) {
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          const img = new Image();
+          img.onload = () => processImage(img);
+          img.src = event.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+
+      function processImage(img) {
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+        const size = 128; // 更大的尺寸保留更多细节
+        canvas.width = size;
+        canvas.height = size;
+
+        // 自适应裁剪：提取中心 75% 区域
+        const sw = img.width;
+        const sh = img.height;
+        const cropRatio = 0.75;
+        const cropW = sw * cropRatio;
+        const cropH = sh * cropRatio;
+        const sx = (sw - cropW) / 2;
+        const sy = (sh - cropH) / 2;
+
+        // 缩放到标准尺寸 128×128
+        ctx.drawImage(img, sx, sy, cropW, cropH, 0, 0, size, size);
+
+        // 获取 RGB 三通道数据
+        const imageData = ctx.getImageData(0, 0, size, size).data;
+        const redPixels = new Float32Array(size * size);
+        const greenPixels = new Float32Array(size * size);
+        const bluePixels = new Float32Array(size * size);
+
+        for (let i = 0; i < imageData.length; i += 4) {
+          const idx = i / 4;
+          redPixels[idx] = imageData[i];
+          greenPixels[idx] = imageData[i + 1];
+          bluePixels[idx] = imageData[i + 2];
+        }
+
+        // 发送给 Web Worker 计算 pHash
+        worker.postMessage({
+          redPixels: redPixels,
+          greenPixels: greenPixels,
+          bluePixels: bluePixels,
+          size: size,
+        });
+      }
+
+      worker.onmessage = function (e) {
+        const userHash = e.data.hash;
+        compareHashes(userHash);
+      };
+
+      function compareHashes(userHash) {
+        const results = [];
+        for (const [levelId, dbHash] of Object.entries(DB_HASHES)) {
+          const distance = getHammingDistance(userHash, dbHash);
+          results.push({ levelId, distance });
+        }
+
+        // 按相似度排序
+        results.sort((a, b) => a.distance - b.distance);
+
+        renderResults(results.slice(0, 5)); // 显示前 5 个最像的
+      }
+
+      function getHammingDistance(h1, h2) {
+        // 16 进制转二进制后计算汉明距离
+        let dist = 0;
+        for (let i = 0; i < h1.length; i++) {
+          const xor = parseInt(h1[i], 16) ^ parseInt(h2[i], 16);
+          // 计算 xor 结果中 1 的个数
+          dist += xor.toString(2).split("1").length - 1;
+        }
+        return dist;
+      }
+
+      function renderResults(matches) {
+        const list = document.getElementById("results-list");
+        list.innerHTML = matches
+          .map(
+            (m) => `
+            <div class="result-item">
+                <strong>${m.levelId}</strong>
+                <span class="distance-tag ${m.distance < 20 ? "match" : ""}">
+                    Distance: ${m.distance}
+                </span>
+                <span>${m.distance < 60 ? "✅ High Match" : m.distance < 120 ? "❓ Possible" : "❌ Low Match"}</span>
+            </div>
+        `,
+          )
+          .join("");
+      }
+    </script>
+  </body>
+</html>

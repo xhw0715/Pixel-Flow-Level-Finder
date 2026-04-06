@@ -1,0 +1,12 @@
+{
+  "name": "phash-generator",
+  "version": "1.0.0",
+  "description": "Generate pHash for level images",
+  "main": "generate-phashes.js",
+  "scripts": {
+    "generate": "node generate-phashes.js"
+  },
+  "dependencies": {
+    "canvas": "^2.11.2"
+  }
+}
