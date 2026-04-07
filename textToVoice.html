@@ -169,43 +169,49 @@
     <div id="tip">点击「播报」开始语音</div>
 
     <script>
-      const synth = window.speechSynthesis;
-      const voiceSelect = document.getElementById("voiceSelect");
       const rateRange = document.getElementById("rateRange");
       const rateVal = document.getElementById("rateVal");
       const tip = document.getElementById("tip");
       const btnPlay = document.getElementById("btnPlay");
       const btnPause = document.getElementById("btnPause");
       const btnStop = document.getElementById("btnStop");
+      const voiceSelect = document.getElementById("voiceSelect");
 
-      let voices = [];
-      let chineseVoices = [];
-      let isPaused = false;
-
-      // 语速显示
       rateRange.addEventListener("input", () => {
         rateVal.textContent = parseFloat(rateRange.value).toFixed(1);
       });
 
-      // 加载语音列表
+      // ── 检测 speechSynthesis 是否可用 ──────────────────────────────
+      const USE_SYNTH = (() => {
+        try {
+          return !!(window.speechSynthesis && window.SpeechSynthesisUtterance);
+        } catch (e) {
+          return false;
+        }
+      })();
+
+      if (!USE_SYNTH) {
+        // 不支持时隐藏播报员选择（降级方案无法切换音色）
+        voiceSelect.closest(".controls").style.display = "none";
+        tip.textContent = "当前浏览器不支持原生语音，已切换为在线TTS";
+      }
+
+      // ══════════════════════════════════════════════════════════════
+      // 方案A：Web Speech API
+      // ══════════════════════════════════════════════════════════════
+      const synth = USE_SYNTH ? window.speechSynthesis : null;
+      let voices = [],
+        chineseVoices = [];
+
       function loadVoices() {
         voices = synth.getVoices();
         chineseVoices = voices.filter(
           (v) =>
             v.lang.startsWith("zh") || v.name.toLowerCase().includes("chinese"),
         );
+        if (!chineseVoices.length) chineseVoices = voices;
 
-        voiceSelect.innerHTML = "";
-        if (chineseVoices.length === 0) {
-          // 没有中文语音时列出全部
-          chineseVoices = voices;
-        }
-
-        const def = document.createElement("option");
-        def.value = "";
-        def.textContent = "默认语音";
-        voiceSelect.appendChild(def);
-
+        voiceSelect.innerHTML = '<option value="">默认语音</option>';
         chineseVoices.forEach((v, i) => {
           const opt = document.createElement("option");
           opt.value = i;
@@ -214,22 +220,17 @@
         });
       }
 
-      if (synth.onvoiceschanged !== undefined) {
-        synth.onvoiceschanged = loadVoices;
+      if (USE_SYNTH) {
+        if (synth.onvoiceschanged !== undefined)
+          synth.onvoiceschanged = loadVoices;
+        loadVoices();
       }
-      // 部分安卓浏览器需要主动调用一次
-      loadVoices();
 
-      // 核心播报函数 —— 必须在用户手势回调中调用（iOS 限制）
-      function playVoice() {
-        const text = document.getElementById("speakBox").innerText.trim();
-        if (!text) {
-          tip.textContent = "没有可播报的内容";
-          return;
-        }
+      let resumeTimer = null;
 
+      function synthPlay(text) {
         synth.cancel();
-        isPaused = false;
+        clearInterval(resumeTimer);
 
         const utterance = new SpeechSynthesisUtterance(text);
         utterance.lang = "zh-CN";
@@ -237,25 +238,25 @@
         utterance.volume = 1;
 
         const idx = voiceSelect.value;
-        if (idx !== "" && chineseVoices[idx]) {
+        if (idx !== "" && chineseVoices[idx])
           utterance.voice = chineseVoices[idx];
-        }
 
         utterance.onstart = () => {
           tip.textContent = "🔊 正在播报...";
         };
         utterance.onend = () => {
           tip.textContent = "✅ 播报完成";
-          isPaused = false;
+          clearInterval(resumeTimer);
         };
         utterance.onerror = (e) => {
           tip.textContent = `❌ 播报出错: ${e.error}`;
+          clearInterval(resumeTimer);
         };
 
         synth.speak(utterance);
 
-        // iOS Safari 长文本 bug 修复：定期 resume 防止静默停止
-        const resumeTimer = setInterval(() => {
+        // iOS 长文本静默停止修复
+        resumeTimer = setInterval(() => {
           if (!synth.speaking) {
             clearInterval(resumeTimer);
             return;
@@ -267,27 +268,139 @@
         }, 10000);
       }
 
+      // ══════════════════════════════════════════════════════════════
+      // 方案B：百度翻译 TTS 降级（微信/不支持 speechSynthesis 的环境）
+      // 单次最多约200字，超出自动分段顺序播放
+      // ══════════════════════════════════════════════════════════════
+      const CHUNK_SIZE = 180; // 百度TTS单次安全字数
+      let audioQueue = []; // 分段 Audio 队列
+      let currentAudio = null;
+      let stopped = false;
+
+      function baiduTtsUrl(text) {
+        return `https://tts.baidu.com/text2audio?lan=zh&ie=UTF-8&spd=5&text=${encodeURIComponent(text)}`;
+      }
+
+      // 将文本按标点或字数切分
+      function splitText(text, size) {
+        const chunks = [];
+        // 先按句子切（。！？；\n），再按 size 截断
+        const sentences = text.split(/(?<=[。！？；\n])/);
+        let buf = "";
+        for (const s of sentences) {
+          if ((buf + s).length > size) {
+            if (buf) chunks.push(buf.trim());
+            // 单句超长则强制截断
+            let tmp = s;
+            while (tmp.length > size) {
+              chunks.push(tmp.slice(0, size));
+              tmp = tmp.slice(size);
+            }
+            buf = tmp;
+          } else {
+            buf += s;
+          }
+        }
+        if (buf.trim()) chunks.push(buf.trim());
+        return chunks;
+      }
+
+      function playNextChunk() {
+        if (stopped || !audioQueue.length) {
+          if (!stopped) tip.textContent = "✅ 播报完成";
+          currentAudio = null;
+          return;
+        }
+        const url = audioQueue.shift();
+        const audio = new Audio(url);
+        currentAudio = audio;
+        audio.playbackRate = parseFloat(rateRange.value);
+        audio.onplay = () => {
+          tip.textContent = "🔊 正在播报...";
+        };
+        audio.onended = playNextChunk;
+        audio.onerror = () => {
+          tip.textContent = "❌ TTS加载失败，请检查网络";
+          playNextChunk(); // 跳过当前段继续
+        };
+        audio.play().catch(() => {
+          tip.textContent = "❌ 音频播放被阻止";
+        });
+      }
+
+      function ttsPlay(text) {
+        ttsStop();
+        stopped = false;
+        const chunks = splitText(text, CHUNK_SIZE);
+        audioQueue = chunks.map(baiduTtsUrl);
+        tip.textContent = `共 ${chunks.length} 段，加载中...`;
+        playNextChunk();
+      }
+
+      function ttsStop() {
+        stopped = true;
+        audioQueue = [];
+        if (currentAudio) {
+          currentAudio.pause();
+          currentAudio.src = "";
+          currentAudio = null;
+        }
+      }
+
+      function ttsPause() {
+        if (currentAudio && !currentAudio.paused) currentAudio.pause();
+      }
+
+      function ttsResume() {
+        if (currentAudio && currentAudio.paused) currentAudio.play();
+      }
+
+      // ══════════════════════════════════════════════════════════════
+      // 统一按钮事件
+      // ══════════════════════════════════════════════════════════════
       btnPlay.addEventListener("click", () => {
-        if (synth.paused) {
-          synth.resume();
-          isPaused = false;
-          tip.textContent = "🔊 继续播报...";
+        const text = document.getElementById("speakBox").innerText.trim();
+        if (!text) {
+          tip.textContent = "没有可播报的内容";
+          return;
+        }
+
+        if (USE_SYNTH) {
+          if (synth.paused) {
+            synth.resume();
+            tip.textContent = "🔊 继续播报...";
+          } else {
+            synthPlay(text);
+          }
         } else {
-          playVoice();
+          if (currentAudio && currentAudio.paused) {
+            ttsResume();
+            tip.textContent = "🔊 继续播报...";
+          } else {
+            ttsPlay(text);
+          }
         }
       });
 
       btnPause.addEventListener("click", () => {
-        if (synth.speaking && !synth.paused) {
-          synth.pause();
-          isPaused = true;
+        if (USE_SYNTH) {
+          if (synth.speaking && !synth.paused) {
+            synth.pause();
+            tip.textContent = "⏸ 已暂停";
+          }
+        } else {
+          ttsPause();
           tip.textContent = "⏸ 已暂停";
         }
       });
 
       btnStop.addEventListener("click", () => {
-        synth.cancel();
-        isPaused = false;
+        if (USE_SYNTH) {
+          synth.cancel();
+          clearInterval(resumeTimer);
+        } else {
+          ttsStop();
+        }
         tip.textContent = "■ 已停止";
       });
     </script>
