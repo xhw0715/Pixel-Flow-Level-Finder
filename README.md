@@ -83,6 +83,10 @@ Each hash is a **192-character hex string** (768 bits = 256 bits × 3 channels: 
 - Any modern browser with Canvas and Web Worker support (Chrome, Firefox, Edge, Safari)
 - Node.js (only needed for the local server)
 
+## 🔗 Links
+
+- Website: [https://pixelflowonline.net](https://pixelflowonline.net)
+
 ## License
 
 MIT
