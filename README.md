@@ -72,6 +72,7 @@ Each hash is a **192-character hex string** (768 bits = 256 bits × 3 channels: 
 ├── index.html              # Level finder UI
 ├── fast-batch-phash.html   # Multi-threaded batch hash generator
 ├── batch-phash.html        # Single-threaded batch hash generator
+├── meowdoku.html           # Meowdoku guide landing page (links to meowdokuguide.com)
 ├── phash-worker.js         # Standalone Web Worker for pHash computation
 ├── server.js               # Minimal static file server (Node.js)
 ├── level-hashes.json       # Precomputed hash database
@@ -86,6 +87,7 @@ Each hash is a **192-character hex string** (768 bits = 256 bits × 3 channels: 
 ## 🔗 Links
 
 - Website: [https://pixelflowonline.net](https://pixelflowonline.net)
+- Meowdoku Guide: [https://meowdokuguide.com](https://meowdokuguide.com)
 
 ## License
 

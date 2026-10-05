@@ -1,0 +1,523 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Meowdoku 是什么？猫猫数独玩法、规则与通关攻略</title>
+    <meta
+      name="description"
+      content="Meowdoku 是一款把数独约束和扫雷式推理结合起来的猫咪逻辑解谜游戏。本文介绍它的核心规则、特色功能、高手技巧，并提供完整关卡答案与视频攻略：meowdokuguide.com。"
+    />
+    <meta name="theme-color" content="#f59e0b" />
+    <link rel="canonical" href="https://meowdokuguide.com/" />
+    <style>
+      :root {
+        --bg: #fff8ef;
+        --card: #ffffff;
+        --ink: #2b2118;
+        --muted: #7a6a5a;
+        --brand: #f59e0b;
+        --brand-dark: #b45309;
+        --brand-soft: #fde68a;
+        --line: #f0e2cf;
+        --shadow: 0 6px 24px rgba(180, 83, 9, 0.08);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family:
+          -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei",
+          "Segoe UI", Roboto, Arial, sans-serif;
+        line-height: 1.75;
+      }
+      a {
+        color: var(--brand-dark);
+      }
+      .wrap {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+      header.top {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background: rgba(255, 248, 239, 0.92);
+        backdrop-filter: blur(8px);
+        border-bottom: 1px solid var(--line);
+      }
+      header.top .wrap {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        height: 64px;
+      }
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 700;
+        font-size: 17px;
+        color: var(--ink);
+        text-decoration: none;
+      }
+      .logo span {
+        background: var(--brand-soft);
+        border-radius: 4px;
+        padding: 0 6px;
+      }
+      .btn {
+        display: inline-block;
+        border-radius: 10px;
+        padding: 10px 18px;
+        font-weight: 600;
+        font-size: 15px;
+        text-decoration: none;
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+      }
+      .btn:active {
+        transform: translateY(1px);
+      }
+      .btn-primary {
+        background: var(--brand);
+        color: #fff;
+        box-shadow: var(--shadow);
+      }
+      .btn-ghost {
+        background: #fff;
+        color: var(--brand-dark);
+        border: 1px solid var(--line);
+      }
+      .hero {
+        text-align: center;
+        padding: 64px 0 40px;
+      }
+      .hero .kicker {
+        display: inline-block;
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--brand-dark);
+        background: var(--brand-soft);
+        border-radius: 999px;
+        padding: 4px 14px;
+        margin-bottom: 18px;
+      }
+      .hero h1 {
+        font-size: clamp(28px, 5vw, 44px);
+        line-height: 1.25;
+        margin: 0 0 16px;
+      }
+      .hero p {
+        color: var(--muted);
+        font-size: 17px;
+        max-width: 720px;
+        margin: 0 auto 28px;
+      }
+      .hero .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        justify-content: center;
+      }
+      section {
+        padding: 32px 0;
+      }
+      h2 {
+        font-size: clamp(22px, 3.5vw, 30px);
+        margin: 0 0 8px;
+      }
+      .lead {
+        color: var(--muted);
+        margin: 0 0 24px;
+      }
+      .grid {
+        display: grid;
+        gap: 16px;
+      }
+      .grid-3 {
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      }
+      .grid-2 {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      }
+      .card {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 20px;
+        box-shadow: var(--shadow);
+      }
+      .card h3 {
+        margin: 0 0 8px;
+        font-size: 17px;
+      }
+      .card p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 15px;
+      }
+      .card .num {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        border-radius: 8px;
+        background: var(--brand);
+        color: #fff;
+        font-weight: 700;
+        font-size: 15px;
+        margin-bottom: 10px;
+      }
+      ul.plain {
+        margin: 0;
+        padding-left: 20px;
+        color: var(--muted);
+      }
+      ul.plain li {
+        margin-bottom: 6px;
+      }
+      ul.plain strong {
+        color: var(--ink);
+      }
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 16px;
+        text-align: center;
+      }
+      .stat {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 18px 10px;
+      }
+      .stat b {
+        display: block;
+        font-size: 26px;
+        color: var(--brand-dark);
+      }
+      .stat span {
+        font-size: 14px;
+        color: var(--muted);
+      }
+      details {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 14px 18px;
+        margin-bottom: 10px;
+      }
+      details summary {
+        cursor: pointer;
+        font-weight: 600;
+        list-style: none;
+      }
+      details summary::-webkit-details-marker {
+        display: none;
+      }
+      details summary::before {
+        content: "＋ ";
+        color: var(--brand);
+        font-weight: 700;
+      }
+      details[open] summary::before {
+        content: "－ ";
+      }
+      details p {
+        margin: 10px 0 0;
+        color: var(--muted);
+      }
+      .cta {
+        background: linear-gradient(135deg, #f59e0b, #f97316);
+        border-radius: 18px;
+        padding: 36px 24px;
+        text-align: center;
+        color: #fff;
+        margin: 24px 0 8px;
+      }
+      .cta h2 {
+        color: #fff;
+        margin-bottom: 10px;
+      }
+      .cta p {
+        margin: 0 auto 22px;
+        max-width: 620px;
+        opacity: 0.95;
+      }
+      .cta .btn {
+        background: #fff;
+        color: var(--brand-dark);
+      }
+      footer {
+        border-top: 1px solid var(--line);
+        margin-top: 40px;
+        padding: 28px 0 40px;
+        color: var(--muted);
+        font-size: 14px;
+        text-align: center;
+      }
+      footer a {
+        color: var(--brand-dark);
+      }
+    </style>
+  </head>
+  <body>
+    <header class="top">
+      <div class="wrap">
+        <a class="logo" href="https://meowdokuguide.com/" target="_blank" rel="noopener">
+          🐱 Meowdoku <span>Guide</span>
+        </a>
+        <a
+          class="btn btn-primary"
+          href="https://meowdokuguide.com/"
+          target="_blank"
+          rel="noopener"
+          >查看全部攻略</a
+        >
+      </div>
+    </header>
+
+    <main class="wrap">
+      <div class="hero">
+        <div class="kicker">猫猫逻辑解谜 · 免费游玩</div>
+        <h1>Meowdoku 是什么？<br />一分钟学会规则，一整晚停不下来</h1>
+        <p>
+          Meowdoku 是一款把<strong>数独的约束</strong>和<strong>扫雷式的推理</strong>结合在一起的猫咪解谜游戏。
+          棋盘被切成一块块彩色区域，你要在每个区域里恰好放一只猫，同时保证猫与猫之间互不相邻。
+          规则不到一分钟就能学会，但一步落错就可能让整盘棋悄悄崩掉。
+        </p>
+        <div class="actions">
+          <a
+            class="btn btn-primary"
+            href="https://meowdokuguide.com/"
+            target="_blank"
+            rel="noopener"
+            >进入 Meowdoku Guide →</a
+          >
+          <a
+            class="btn btn-ghost"
+            href="https://meowdokuguide.com/online"
+            target="_blank"
+            rel="noopener"
+            >浏览器直接试玩</a
+          >
+        </div>
+      </div>
+
+      <section>
+        <h2>核心玩法：三条规则就是全部</h2>
+        <p class="lead">
+          记住下面三句话，你就已经会玩 Meowdoku 了。剩下的都是推理。
+        </p>
+        <div class="grid grid-3">
+          <div class="card">
+            <div class="num">1</div>
+            <h3>每个彩色区域一只猫</h3>
+            <p>棋盘被划分为若干彩色区域，每个区域有且仅有一只猫，不多也不少。</p>
+          </div>
+          <div class="card">
+            <div class="num">2</div>
+            <h3>每行每列一只猫</h3>
+            <p>和数独一样，任意一行、任意一列都只能出现一只猫。</p>
+          </div>
+          <div class="card">
+            <div class="num">3</div>
+            <h3>猫与猫不能相邻</h3>
+            <p>两只猫不能上下左右相邻，<strong>斜对角也不行</strong>，这是最容易忽略的一条。</p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>四步上手：新手也能顺畅通关</h2>
+        <div class="grid grid-2">
+          <div class="card">
+            <div class="num">1</div>
+            <h3>先捡“送分猫”</h3>
+            <p>如果某个区域只剩一个可用格子，或某行只剩一个空位，那就是必放的位置，先把它们全部收掉。</p>
+          </div>
+          <div class="card">
+            <div class="num">2</div>
+            <h3>放完猫立刻打叉</h3>
+            <p>每放一只猫，就把它所在的行、列、同区域以及周围八个格子全部排除掉，棋盘会越玩越清楚。</p>
+          </div>
+          <div class="card">
+            <div class="num">3</div>
+            <h3>锁定区域法</h3>
+            <p>若某区域可用的格子全挤在同一行，那这一行的猫必然来自该区域，该行其余格子就可以直接划掉。</p>
+          </div>
+          <div class="card">
+            <div class="num">4</div>
+            <h3>绝不靠猜</h3>
+            <p>游戏有三次生命、没有撤销。没有必放位置时，去找“受约束最多”的区域，而不是随手点一个碰运气。</p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>游戏特色与功能</h2>
+        <p class="lead">轻量、离线、无压力，但难度上限一点也不低。</p>
+        <div class="grid grid-2">
+          <div class="card">
+            <h3>🐾 区域逻辑，而非数字填格</h3>
+            <p>没有数字，只有颜色和位置关系，靠排除法一步步逼近唯一解，非常适合喜欢纯推理的玩家。</p>
+          </div>
+          <div class="card">
+            <h3>❤️ 三次生命，没有倒计时</h3>
+            <p>放错猫会消耗一颗心，但游戏没有时间压力，你可以慢慢想清楚再落子。</p>
+          </div>
+          <div class="card">
+            <h3>💡 提示与每日挑战</h3>
+            <p>卡住时可以用猫提示或叉号提示；每天还有一张全服统一的挑战棋盘，坚持通关可以累积连胜。</p>
+          </div>
+          <div class="card">
+            <h3>📶 完全离线可玩</h3>
+            <p>安装后无需联网，没有计时器，飞机上或通勤路上都能随时开一局。</p>
+          </div>
+          <div class="card">
+            <h3>📈 超过 15,000 个关卡</h3>
+            <p>从 4×4 的新手小盘一路进阶到大型高难棋盘，难度曲线平滑，够玩很久。</p>
+          </div>
+          <div class="card">
+            <h3>🆓 免费下载，手机友好</h3>
+            <p>Google Play 与 App Store 均可免费获取，靠广告和可选内购支持，不付费也能通关全部内容。</p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>高手技巧：卡关时先看这里</h2>
+        <div class="grid grid-2">
+          <div class="card">
+            <h3>最受约束的区域优先</h3>
+            <p>别盯着格子最多的区域，先找可用格子最少的区域——只剩两个候选时，往往顺带就锁定了它所在的行或列。</p>
+          </div>
+          <div class="card">
+            <h3>连着看两到三行</h3>
+            <p>如果这几行只能由相同的少数几个区域来供猫，那么这些区域就被“预定”了，这些行里其余的格子全部可以排除。</p>
+          </div>
+          <div class="card">
+            <h3>打错叉不扣血</h3>
+            <p>不确定时就打叉，而不是放猫。叉号错了只浪费一秒，猫放错了要掉一颗心。</p>
+          </div>
+          <div class="card">
+            <h3>反复检查你的叉号</h3>
+            <p>大多数“卡死”不是因为缺少新思路，而是之前划掉了一个答案真正需要的格子。先复查叉号，再找新推理。</p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>常见问题</h2>
+        <details open>
+          <summary>Meowdoku 怎么玩？</summary>
+          <p>
+            棋盘被分成彩色区域，每个区域放一只猫；任意两行、两列都不能有两只猫，且猫与猫不能相邻（含斜对角）。
+            双击格子放置猫，游戏没有计时器，但有三次生命，所以每一步都应该有理由，而不是靠猜。
+          </p>
+        </details>
+        <details>
+          <summary>Meowdoku 免费吗？</summary>
+          <p>免费。Google Play 和 App Store 都能免费下载，通过广告和可选内购支持开发，不付费也能通关所有关卡。</p>
+        </details>
+        <details>
+          <summary>一共多少个关卡？</summary>
+          <p>
+            游戏内置超过 15,000 个关卡，从小棋盘逐步过渡到真正烧脑的大棋盘。攻略站目前已经为其中
+            1,370 个关卡提供了完整的视频通关演示，并持续更新。
+          </p>
+        </details>
+        <details>
+          <summary>卡关时去哪里找答案？</summary>
+          <p>
+            可以前往
+            <a href="https://meowdokuguide.com/levels" target="_blank" rel="noopener"
+              >Meowdoku Guide 的关卡库</a
+            >，按关卡号直接搜索，每个关卡都配有完整的视频演示和对应的文字思路讲解。
+          </p>
+        </details>
+        <details>
+          <summary>为什么我总是在同一关卡住？</summary>
+          <p>
+            多数情况不是缺灵感，而是某次打叉打错，把正解需要的格子划掉了。建议先复查所有叉号，
+            再去找“候选格子全在同一行或同一列”的区域。
+          </p>
+        </details>
+        <details>
+          <summary>可以离线玩吗？</summary>
+          <p>可以。安装后 Meowdoku 完全支持离线游玩，正常游戏过程中不需要联网。</p>
+        </details>
+      </section>
+
+      <section>
+        <h2>Meowdoku Guide 能帮你什么</h2>
+        <p class="lead">
+          <a href="https://meowdokuguide.com/" target="_blank" rel="noopener">meowdokuguide.com</a>
+          是由玩家制作的非官方攻略站，覆盖关卡答案、提示、视频演示与进阶策略。
+        </p>
+        <div class="stats">
+          <div class="stat"><b>1,370</b><span>视频通关关卡</span></div>
+          <div class="stat"><b>100 关</b><span>一组，快速跳转</span></div>
+          <div class="stat"><b>免费</b><span>无需注册即可查看</span></div>
+          <div class="stat"><b>在线玩</b><span>浏览器直接开一局</span></div>
+        </div>
+        <div class="grid grid-3" style="margin-top: 16px">
+          <div class="card">
+            <h3>关卡库</h3>
+            <p>
+              按关卡号查找对应的棋盘，
+              <a href="https://meowdokuguide.com/levels" target="_blank" rel="noopener">前往关卡库 →</a>
+            </p>
+          </div>
+          <div class="card">
+            <h3>在线试玩</h3>
+            <p>
+              和 App 相同规则的浏览器版本，支持手机操作，
+              <a href="https://meowdokuguide.com/online" target="_blank" rel="noopener">立即开玩 →</a>
+            </p>
+          </div>
+          <div class="card">
+            <h3>策略与博客</h3>
+            <p>
+              从入门规则到不靠猜通关的进阶思路，
+              <a href="https://meowdokuguide.com/blog" target="_blank" rel="noopener">阅读攻略文章 →</a>
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <div class="cta">
+        <h2>卡在某一关？直接查答案</h2>
+        <p>
+          每个关卡都配有完整的视频演示与分步讲解，照着落子就能过。也可以先玩一局浏览器版找找手感。
+        </p>
+        <a
+          class="btn"
+          href="https://meowdokuguide.com/"
+          target="_blank"
+          rel="noopener"
+          >访问 meowdokuguide.com →</a
+        >
+      </div>
+    </main>
+
+    <footer>
+      <div class="wrap">
+        <p>
+          本页为 Meowdoku 玩法与功能的中文介绍，攻略内容来自
+          <a href="https://meowdokuguide.com/" target="_blank" rel="noopener">meowdokuguide.com</a>。
+        </p>
+        <p>非官方网站，Meowdoku 及其相关素材版权归各自所有者所有。</p>
+      </div>
+    </footer>
+  </body>
+</html>
