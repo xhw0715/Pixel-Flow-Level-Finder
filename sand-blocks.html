@@ -1,0 +1,543 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sand Blocks: Drop Puzzle 是什么？流沙掉落玩法、规则与全关卡攻略</title>
+    <meta
+      name="description"
+      content="Sand Blocks: Drop Puzzle 是一款把彩色沙块拉进对应凹槽的物理流沙解谜游戏。本文介绍核心玩法、拉沙顺序技巧、难度分级，并提供 550 关完整视频攻略与拉沙顺序讲解：sand-blocks.org。"
+    />
+    <meta name="theme-color" content="#ca8a04" />
+    <link rel="canonical" href="https://sand-blocks.org/" />
+    <style>
+      :root {
+        --bg: #fffbeb;
+        --card: #ffffff;
+        --ink: #2b2118;
+        --muted: #7c6a52;
+        --brand: #ca8a04;
+        --brand-dark: #854d0e;
+        --brand-soft: #fef08a;
+        --line: #f2e4c6;
+        --shadow: 0 6px 24px rgba(133, 77, 14, 0.08);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family:
+          -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei",
+          "Segoe UI", Roboto, Arial, sans-serif;
+        line-height: 1.75;
+      }
+      a {
+        color: var(--brand-dark);
+      }
+      .wrap {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+      header.top {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background: rgba(255, 251, 235, 0.92);
+        backdrop-filter: blur(8px);
+        border-bottom: 1px solid var(--line);
+      }
+      header.top .wrap {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        height: 64px;
+      }
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 700;
+        font-size: 17px;
+        color: var(--ink);
+        text-decoration: none;
+      }
+      .logo span {
+        background: var(--brand-soft);
+        border-radius: 4px;
+        padding: 0 6px;
+      }
+      .btn {
+        display: inline-block;
+        border-radius: 10px;
+        padding: 10px 18px;
+        font-weight: 600;
+        font-size: 15px;
+        text-decoration: none;
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+      }
+      .btn:active {
+        transform: translateY(1px);
+      }
+      .btn-primary {
+        background: var(--brand);
+        color: #fff;
+        box-shadow: var(--shadow);
+      }
+      .btn-ghost {
+        background: #fff;
+        color: var(--brand-dark);
+        border: 1px solid var(--line);
+      }
+      .hero {
+        text-align: center;
+        padding: 64px 0 40px;
+      }
+      .hero .kicker {
+        display: inline-block;
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--brand-dark);
+        background: var(--brand-soft);
+        border-radius: 999px;
+        padding: 4px 14px;
+        margin-bottom: 18px;
+      }
+      .hero h1 {
+        font-size: clamp(28px, 5vw, 44px);
+        line-height: 1.25;
+        margin: 0 0 16px;
+      }
+      .hero p {
+        color: var(--muted);
+        font-size: 17px;
+        max-width: 720px;
+        margin: 0 auto 28px;
+      }
+      .hero .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        justify-content: center;
+      }
+      section {
+        padding: 32px 0;
+      }
+      h2 {
+        font-size: clamp(22px, 3.5vw, 30px);
+        margin: 0 0 8px;
+      }
+      .lead {
+        color: var(--muted);
+        margin: 0 0 24px;
+      }
+      .grid {
+        display: grid;
+        gap: 16px;
+      }
+      .grid-3 {
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      }
+      .grid-2 {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      }
+      .card {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 20px;
+        box-shadow: var(--shadow);
+      }
+      .card h3 {
+        margin: 0 0 8px;
+        font-size: 17px;
+      }
+      .card p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 15px;
+      }
+      .card .num {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        border-radius: 8px;
+        background: var(--brand);
+        color: #fff;
+        font-weight: 700;
+        font-size: 15px;
+        margin-bottom: 10px;
+      }
+      ul.plain {
+        margin: 0;
+        padding-left: 20px;
+        color: var(--muted);
+      }
+      ul.plain li {
+        margin-bottom: 6px;
+      }
+      ul.plain strong {
+        color: var(--ink);
+      }
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 16px;
+        text-align: center;
+      }
+      .stat {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 16px 12px;
+        box-shadow: var(--shadow);
+      }
+      .stat b {
+        display: block;
+        font-size: 22px;
+        color: var(--brand-dark);
+      }
+      .stat span {
+        font-size: 14px;
+        color: var(--muted);
+      }
+      details {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 14px 18px;
+        margin-bottom: 10px;
+      }
+      details summary {
+        cursor: pointer;
+        font-weight: 600;
+        list-style: none;
+      }
+      details summary::-webkit-details-marker {
+        display: none;
+      }
+      details summary::before {
+        content: "＋ ";
+        color: var(--brand);
+        font-weight: 700;
+      }
+      details[open] summary::before {
+        content: "－ ";
+      }
+      details p {
+        margin: 10px 0 0;
+        color: var(--muted);
+      }
+      .cta {
+        background: linear-gradient(135deg, #ca8a04, #f59e0b);
+        border-radius: 18px;
+        padding: 36px 24px;
+        text-align: center;
+        color: #fff;
+        margin: 24px 0 8px;
+      }
+      .cta h2 {
+        color: #fff;
+        margin-bottom: 10px;
+      }
+      .cta p {
+        margin: 0 auto 22px;
+        max-width: 620px;
+        opacity: 0.95;
+      }
+      .cta .btn {
+        background: #fff;
+        color: var(--brand-dark);
+      }
+      footer {
+        border-top: 1px solid var(--line);
+        margin-top: 40px;
+        padding: 28px 0 40px;
+        color: var(--muted);
+        font-size: 14px;
+        text-align: center;
+      }
+      footer a {
+        color: var(--brand-dark);
+      }
+    </style>
+  </head>
+  <body>
+    <header class="top">
+      <div class="wrap">
+        <a class="logo" href="https://sand-blocks.org/" target="_blank" rel="noopener">
+          🏖️ Sand Blocks <span>Guide</span>
+        </a>
+        <a
+          class="btn btn-primary"
+          href="https://sand-blocks.org/levels"
+          target="_blank"
+          rel="noopener"
+          >查看全部攻略</a
+        >
+      </div>
+    </header>
+
+    <main class="wrap">
+      <div class="hero">
+        <div class="kicker">物理流沙解谜 · 免费游玩</div>
+        <h1>Sand Blocks: Drop Puzzle 是什么？<br />把彩色沙块拉进凹槽，看棋盘被一粒粒清空</h1>
+        <p>
+          Sand Blocks: Drop Puzzle 是一款<strong>免费的手机物理解谜游戏</strong>。棋盘上散布着各种颜色的沙块，
+          你要把它们逐一拉向<strong>形状匹配的凹槽</strong>，沙子会像真实流沙一样流动、塌落，最后填满每一个坑洞。
+          规则一句话就能说完，但拉动顺序错一步，颜色就可能互相堵死——每一关都是一次关于顺序的小考试。
+        </p>
+        <div class="actions">
+          <a
+            class="btn btn-primary"
+            href="https://sand-blocks.org/"
+            target="_blank"
+            rel="noopener"
+            >进入 Sand Blocks Guide →</a
+          >
+          <a
+            class="btn btn-ghost"
+            href="https://sand-blocks.org/levels"
+            target="_blank"
+            rel="noopener"
+            >按关卡号查答案</a
+          >
+        </div>
+      </div>
+
+      <section>
+        <h2>核心玩法：拉动、流动、填满</h2>
+        <p class="lead">三句话讲完规则，剩下的全是顺序规划。</p>
+        <div class="grid grid-3">
+          <div class="card">
+            <div class="num">1</div>
+            <h3>拉动同色沙块</h3>
+            <p>按住一种颜色的沙块，朝对应的凹槽方向拖动，整股沙子就会沿着这条路流动。</p>
+          </div>
+          <div class="card">
+            <div class="num">2</div>
+            <h3>真实物理沉降</h3>
+            <p>沙子不会瞬移消失，而是逐粒流动、堆积、塌陷，绕过障碍滑进坑里，过程完全可以预判。</p>
+          </div>
+          <div class="card">
+            <div class="num">3</div>
+            <h3>填满每个凹槽</h3>
+            <p>当所有凹槽都被填满、棋盘上再无多余的沙粒，这一关就算通关。</p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>四步上手：新手也能顺畅通关</h2>
+        <div class="grid grid-2">
+          <div class="card">
+            <div class="num">1</div>
+            <h3>先扫一遍棋盘</h3>
+            <p>动手指之前，先找出所有颜色和它们各自最大的凹槽。十秒钟的观察，能省下大半次重开。</p>
+          </div>
+          <div class="card">
+            <div class="num">2</div>
+            <h3>先填最大的坑</h3>
+            <p>沙子最多的颜色拖得最久，早点把它放出去，能为后面需要空间的沙流腾出最多余地。</p>
+          </div>
+          <div class="card">
+            <div class="num">3</div>
+            <h3>按顺序连锁拉动</h3>
+            <p>让每一股沙流依次沉降干净；被挡住的颜色，要等它前面的颜色先让开再动手。</p>
+          </div>
+          <div class="card">
+            <div class="num">4</div>
+            <h3>清掉最后一粒沙</h3>
+            <p>所有凹槽填满即通关。卡住时就去看攻略视频，换个顺序用新的思路再试一次。</p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>游戏特色与功能</h2>
+        <p class="lead">轻量、离线、随时能玩，但难度上限一点也不低。</p>
+        <div class="grid grid-2">
+          <div class="card">
+            <h3>🏖️ 真实流沙物理</h3>
+            <p>沙子会流动、堆积、塌陷，而不是简单消失。你能提前看清每一股沙流会怎么走，再决定要不要松手。</p>
+          </div>
+          <div class="card">
+            <h3>⏱️ 只有计时，没有步数限制</h3>
+            <p>没有“只能走几步”的约束，唯一的对手是时间，所以你可以先把顺序想清楚再拉动。</p>
+          </div>
+          <div class="card">
+            <h3>📶 完全离线可玩</h3>
+            <p>安装后每一张棋盘都是自成一体的，飞机上、地铁里没有网络也能随时来一关。</p>
+          </div>
+          <div class="card">
+            <h3>📈 四种难度，关卡够多</h3>
+            <p>从 Beginner 到 Expert 四个难度档位，攻略站目前已经为其中 550 关提供完整的视频演示。</p>
+          </div>
+          <div class="card">
+            <h3>🆓 免费下载，广告支持</h3>
+            <p>Android 平台免费获取，通过广告支持开发，但不付费同样可以通关所有关卡。</p>
+          </div>
+          <div class="card">
+            <h3>🧠 一分钟学会，难在精通</h3>
+            <p>规则简单到不用教程，但高难关卡往往需要提前规划好几步的拉动顺序，越玩越上头。</p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>高手技巧：卡关时先看这里</h2>
+        <div class="grid grid-2">
+          <div class="card">
+            <h3>最大优先</h3>
+            <p>永远先填最大的沙坑，再处理小坑。它能让棋盘保持开阔，留给真正需要空间的沙流。</p>
+          </div>
+          <div class="card">
+            <h3>别急着拉散沙</h3>
+            <p>分散的颜色不要提前动，等棋盘打开之后，再一次性把它的沙粒全部引流干净。</p>
+          </div>
+          <div class="card">
+            <h3>一次拉完，让它自己沉降</h3>
+            <p>花几秒规划顺序，能省下几分钟的零散拖动。动手前先确认哪些颜色会互相挡路。</p>
+          </div>
+          <div class="card">
+            <h3>卡住就重开</h3>
+            <p>拉了四五次还没头绪？直接重开。一张干净的棋盘，永远比纠缠在一起的散沙更快。</p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>常见问题</h2>
+        <details open>
+          <summary>Sand Blocks: Drop Puzzle 怎么玩？</summary>
+          <p>
+            把彩色沙块拉向形状匹配的凹槽，沙子会在真实物理作用下流动、塌落并填进坑洞。
+            在计时结束前填满所有凹槽即可通关。游戏没有步数限制，只有时间压力，所以每一步都可以慢慢规划。
+          </p>
+        </details>
+        <details>
+          <summary>Sand Blocks: Drop Puzzle 免费吗？</summary>
+          <p>免费。Android 平台可以直接免费下载，通过广告支持开发，但不付费也能通关全部关卡。</p>
+        </details>
+        <details>
+          <summary>一共多少个关卡？</summary>
+          <p>
+            游戏内置数百个关卡，分为 Beginner、Intermediate、Advanced、Expert 四个难度档位。
+            攻略站目前已经为其中 550 关提供完整的视频通关演示，并会随着新关卡被攻克持续更新。
+          </p>
+        </details>
+        <details>
+          <summary>卡关时去哪里找答案？</summary>
+          <p>
+            可以前往
+            <a href="https://sand-blocks.org/levels" target="_blank" rel="noopener"
+              >Sand Blocks Guide 的关卡库</a
+            >，按关卡号直接搜索。每个关卡都配有完整的 YouTube 视频演示（即准确的拉动顺序），
+            以及一份用于复盘的文字版拉沙顺序讲解。
+          </p>
+        </details>
+        <details>
+          <summary>为什么我总是在同一关卡住？</summary>
+          <p>
+            大多数卡死，都是因为太早拉动某一种颜色，把另一种颜色的沙子堵进了角落。
+            在高难关卡里，先填最大的坑、把分散的颜色留到最后；当两种颜色互相挡路时，先清掉挡路的那一个。
+          </p>
+        </details>
+        <details>
+          <summary>可以离线玩吗？</summary>
+          <p>可以。安装后 Sand Blocks: Drop Puzzle 完全支持离线游玩，正常游戏过程中不需要联网。</p>
+        </details>
+      </section>
+
+      <section>
+        <h2>Sand Blocks Guide 能帮你什么</h2>
+        <p class="lead">
+          <a href="https://sand-blocks.org/" target="_blank" rel="noopener">sand-blocks.org</a>
+          是由玩家制作的非官方攻略站，覆盖关卡答案、拉动顺序、视频演示与进阶策略。
+        </p>
+        <div class="stats">
+          <div class="stat"><b>550</b><span>视频通关关卡</span></div>
+          <div class="stat"><b>100 关</b><span>一组，快速跳转</span></div>
+          <div class="stat"><b>免费</b><span>无需注册即可查看</span></div>
+          <div class="stat"><b>视频 + 文字</b><span>照着拉就能过</span></div>
+        </div>
+        <div class="grid grid-3" style="margin-top: 16px">
+          <div class="card">
+            <h3>关卡库</h3>
+            <p>
+              按关卡号查找对应的棋盘，
+              <a href="https://sand-blocks.org/levels" target="_blank" rel="noopener">前往关卡库 →</a>
+            </p>
+          </div>
+          <div class="card">
+            <h3>精选关卡</h3>
+            <p>
+              玩家搜索最多的热门关卡合集，
+              <a href="https://sand-blocks.org/featured" target="_blank" rel="noopener">查看精选攻略 →</a>
+            </p>
+          </div>
+          <div class="card">
+            <h3>下载与博客</h3>
+            <p>
+              游戏下载入口与最新策略文章，
+              <a href="https://sand-blocks.org/blog" target="_blank" rel="noopener">阅读攻略文章 →</a>
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>同类攻略</h2>
+        <div class="grid grid-2">
+          <div class="card">
+            <h3>🐜 Food Hunt: Pixel Puzzle</h3>
+            <p>
+              点击颜色放出蚂蚁、啃光所有同色像素的解谜游戏，
+              <a href="food-hunt.html">查看 Food Hunt 玩法介绍与攻略 →</a>
+            </p>
+          </div>
+          <div class="card">
+            <h3>🐱 Meowdoku</h3>
+            <p>
+              把数独约束和扫雷式推理结合的猫咪逻辑解谜，
+              <a href="meowdoku.html">查看 Meowdoku 玩法介绍与攻略 →</a>
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <div class="cta">
+        <h2>卡在某一关？直接看拉沙顺序</h2>
+        <p>
+          每个关卡都配有完整的视频演示与文字版拉沙讲解，照着拉动就能过。先按关卡号搜一搜，再回棋盘重试。
+        </p>
+        <a
+          class="btn"
+          href="https://sand-blocks.org/levels"
+          target="_blank"
+          rel="noopener"
+          >访问 sand-blocks.org →</a
+        >
+      </div>
+    </main>
+
+    <footer>
+      <div class="wrap">
+        <p>
+          本页为 Sand Blocks: Drop Puzzle 玩法与功能的中文介绍，攻略内容来自
+          <a href="https://sand-blocks.org/" target="_blank" rel="noopener">sand-blocks.org</a>。
+        </p>
+        <p>非官方网站，Sand Blocks: Drop Puzzle 及其相关素材版权归各自所有者所有。</p>
+      </div>
+    </footer>
+  </body>
+</html>

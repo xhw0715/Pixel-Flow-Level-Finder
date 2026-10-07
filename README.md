@@ -73,6 +73,8 @@ Each hash is a **192-character hex string** (768 bits = 256 bits × 3 channels: 
 ├── fast-batch-phash.html   # Multi-threaded batch hash generator
 ├── batch-phash.html        # Single-threaded batch hash generator
 ├── meowdoku.html           # Meowdoku guide landing page (links to meowdokuguide.com)
+├── sand-blocks.html        # Sand Blocks: Drop Puzzle guide landing page (links to sand-blocks.org)
+├── food-hunt.html          # Food Hunt: Pixel Puzzle guide landing page (links to food-hunt.org)
 ├── phash-worker.js         # Standalone Web Worker for pHash computation
 ├── server.js               # Minimal static file server (Node.js)
 ├── level-hashes.json       # Precomputed hash database
@@ -88,6 +90,8 @@ Each hash is a **192-character hex string** (768 bits = 256 bits × 3 channels: 
 
 - Website: [https://pixelflowonline.net](https://pixelflowonline.net)
 - Meowdoku Guide: [https://meowdokuguide.com](https://meowdokuguide.com)
+- Sand Blocks: Drop Puzzle Guide: [https://sand-blocks.org](https://sand-blocks.org)
+- Food Hunt: Pixel Puzzle Guide: [https://food-hunt.org](https://food-hunt.org)
 
 ## License
 
