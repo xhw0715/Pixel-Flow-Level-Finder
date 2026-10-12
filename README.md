@@ -72,6 +72,7 @@ Each hash is a **192-character hex string** (768 bits = 256 bits × 3 channels: 
 ├── index.html              # Level finder UI
 ├── fast-batch-phash.html   # Multi-threaded batch hash generator
 ├── batch-phash.html        # Single-threaded batch hash generator
+├── casualgames.html        # CasualGames hub intro page (links to mobilecasualgames.com)
 ├── meowdoku.html           # Meowdoku guide landing page (links to meowdokuguide.com)
 ├── sand-blocks.html        # Sand Blocks: Drop Puzzle guide landing page (links to sand-blocks.org)
 ├── food-hunt.html          # Food Hunt: Pixel Puzzle guide landing page (links to food-hunt.org)
@@ -92,6 +93,8 @@ Each hash is a **192-character hex string** (768 bits = 256 bits × 3 channels: 
 - Meowdoku Guide: [https://meowdokuguide.com](https://meowdokuguide.com)
 - Sand Blocks: Drop Puzzle Guide: [https://sand-blocks.org](https://sand-blocks.org)
 - Food Hunt: Pixel Puzzle Guide: [https://food-hunt.org](https://food-hunt.org)
+- Other Casual Games Guide: [https://mobilecasualgames.com](https://mobilecasualgames.com)
+- CasualGames hub intro page: [casualgames.html](casualgames.html)
 
 ## License
 
