@@ -1,0 +1,557 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Block Out! - Color Sort Puzzle 是什么？滑块分色玩法、规则与全关卡攻略</title>
+    <meta
+      name="description"
+      content="Block Out! - Color Sort Puzzle 是一款把彩色方块滑进同色出口的休闲解谜游戏。本文介绍核心玩法、移动电梯与方块生成器机制、通关顺序技巧，并提供 883 个关卡的攻略索引、879 关视频演示与按关查询入口：block-out.org。"
+    />
+    <meta name="theme-color" content="#0b84b8" />
+    <link rel="canonical" href="https://block-out.org/" />
+    <style>
+      :root {
+        --bg: #f3faff;
+        --card: #ffffff;
+        --ink: #0b2239;
+        --muted: #557086;
+        --brand: #0b84b8;
+        --brand-dark: #075985;
+        --brand-soft: #d9f1ff;
+        --line: #d5e8f3;
+        --shadow: 0 6px 24px rgba(7, 89, 133, 0.08);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family:
+          -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei",
+          "Segoe UI", Roboto, Arial, sans-serif;
+        line-height: 1.75;
+      }
+      a {
+        color: var(--brand-dark);
+      }
+      .wrap {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+      header.top {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background: rgba(243, 250, 255, 0.92);
+        backdrop-filter: blur(8px);
+        border-bottom: 1px solid var(--line);
+      }
+      header.top .wrap {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        height: 64px;
+      }
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 700;
+        font-size: 17px;
+        color: var(--ink);
+        text-decoration: none;
+      }
+      .logo span {
+        background: var(--brand-soft);
+        border-radius: 4px;
+        padding: 0 6px;
+      }
+      .btn {
+        display: inline-block;
+        border-radius: 10px;
+        padding: 10px 18px;
+        font-weight: 600;
+        font-size: 15px;
+        text-decoration: none;
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+      }
+      .btn:active {
+        transform: translateY(1px);
+      }
+      .btn-primary {
+        background: var(--brand);
+        color: #fff;
+        box-shadow: var(--shadow);
+      }
+      .btn-ghost {
+        background: #fff;
+        color: var(--brand-dark);
+        border: 1px solid var(--line);
+      }
+      .hero {
+        text-align: center;
+        padding: 64px 0 40px;
+      }
+      .hero .kicker {
+        display: inline-block;
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--brand-dark);
+        background: var(--brand-soft);
+        border-radius: 999px;
+        padding: 4px 14px;
+        margin-bottom: 18px;
+      }
+      .hero h1 {
+        font-size: clamp(28px, 5vw, 44px);
+        line-height: 1.25;
+        margin: 0 0 16px;
+      }
+      .hero p {
+        color: var(--muted);
+        font-size: 17px;
+        max-width: 720px;
+        margin: 0 auto 28px;
+      }
+      .hero .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        justify-content: center;
+      }
+      section {
+        padding: 32px 0;
+      }
+      h2 {
+        font-size: clamp(22px, 3.5vw, 30px);
+        margin: 0 0 8px;
+      }
+      .lead {
+        color: var(--muted);
+        margin: 0 0 24px;
+      }
+      .grid {
+        display: grid;
+        gap: 16px;
+      }
+      .grid-3 {
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      }
+      .grid-2 {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      }
+      .card {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 20px;
+        box-shadow: var(--shadow);
+      }
+      .card h3 {
+        margin: 0 0 8px;
+        font-size: 17px;
+      }
+      .card p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 15px;
+      }
+      .card .num {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        border-radius: 8px;
+        background: var(--brand);
+        color: #fff;
+        font-weight: 700;
+        font-size: 15px;
+        margin-bottom: 10px;
+      }
+      ul.plain {
+        margin: 0;
+        padding-left: 20px;
+        color: var(--muted);
+      }
+      ul.plain li {
+        margin-bottom: 6px;
+      }
+      ul.plain strong {
+        color: var(--ink);
+      }
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 16px;
+        text-align: center;
+      }
+      .stat {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 16px 12px;
+        box-shadow: var(--shadow);
+      }
+      .stat b {
+        display: block;
+        font-size: 22px;
+        color: var(--brand-dark);
+      }
+      .stat span {
+        font-size: 14px;
+        color: var(--muted);
+      }
+      details {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 14px 18px;
+        margin-bottom: 10px;
+      }
+      details summary {
+        cursor: pointer;
+        font-weight: 600;
+        list-style: none;
+      }
+      details summary::-webkit-details-marker {
+        display: none;
+      }
+      details summary::before {
+        content: "＋ ";
+        color: var(--brand);
+        font-weight: 700;
+      }
+      details[open] summary::before {
+        content: "－ ";
+      }
+      details p {
+        margin: 10px 0 0;
+        color: var(--muted);
+      }
+      .cta {
+        background: linear-gradient(135deg, #075985, #0b84b8);
+        border-radius: 18px;
+        padding: 36px 24px;
+        text-align: center;
+        color: #fff;
+        margin: 24px 0 8px;
+      }
+      .cta h2 {
+        color: #fff;
+        margin-bottom: 10px;
+      }
+      .cta p {
+        margin: 0 auto 22px;
+        max-width: 620px;
+        opacity: 0.95;
+      }
+      .cta .btn {
+        background: #fff;
+        color: var(--brand-dark);
+      }
+      footer {
+        border-top: 1px solid var(--line);
+        margin-top: 40px;
+        padding: 28px 0 40px;
+        color: var(--muted);
+        font-size: 14px;
+        text-align: center;
+      }
+      footer a {
+        color: var(--brand-dark);
+      }
+    </style>
+  </head>
+  <body>
+    <header class="top">
+      <div class="wrap">
+        <a class="logo" href="https://block-out.org/" target="_blank" rel="noopener">
+          🧩 Block Out! <span>Guide</span>
+        </a>
+        <a
+          class="btn btn-primary"
+          href="https://block-out.org/levels"
+          target="_blank"
+          rel="noopener"
+          >查看全部攻略</a
+        >
+      </div>
+    </header>
+
+    <main class="wrap">
+      <div class="hero">
+        <div class="kicker">滑块分色解谜 · 免费下载</div>
+        <h1>Block Out! - Color Sort Puzzle 是什么？<br />把彩色方块送进同色出口，在移动机关中理清顺序</h1>
+        <p>
+          Block Out! - Color Sort Puzzle 是一款<strong>免费的手机滑块解谜游戏</strong>。棋盘上的彩色方块要沿着空出的通道，
+          逐一滑进<strong>颜色相同的出口</strong>；所有方块清空才算通关。它看起来像简单的颜色配对，实际更像一道共享路线的交通题：
+          方块互相借道，电梯会改变通路，生成器还会往棋盘里继续投放新方块。
+        </p>
+        <div class="actions">
+          <a
+            class="btn btn-primary"
+            href="https://block-out.org/"
+            target="_blank"
+            rel="noopener"
+            >进入 Block Out Guide →</a
+          >
+          <a
+            class="btn btn-ghost"
+            href="https://block-out.org/levels"
+            target="_blank"
+            rel="noopener"
+            >按关卡号查答案</a
+          >
+        </div>
+      </div>
+
+      <section>
+        <h2>核心玩法：找出口、清通道、送方块</h2>
+        <p class="lead">三句话讲完规则，真正难的是每一步先动哪一块。</p>
+        <div class="grid grid-3">
+          <div class="card">
+            <div class="num">1</div>
+            <h3>先认出口和方块</h3>
+            <p>每种颜色都有自己的出口。先数清每种颜色有几个方块、出口在棋盘哪一侧，才能判断哪条路必须先让出来。</p>
+          </div>
+          <div class="card">
+            <div class="num">2</div>
+            <h3>沿空道滑进同色门</h3>
+            <p>只有方块与同色出口之间的格子都空着时，才能顺利滑过去。通道被挡住，就得先移开挡路的那一块。</p>
+          </div>
+          <div class="card">
+            <div class="num">3</div>
+            <h3>清空整个棋盘</h3>
+            <p>方块进入同色出口后会消失。把所有彩色方块都送出去，关卡就完成了；留在场上的越少，后面的路线越好读。</p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>四步上手：先看路，再动手</h2>
+        <div class="grid grid-2">
+          <div class="card">
+            <div class="num">1</div>
+            <h3>先做十秒观察</h3>
+            <p>别急着滑第一块。先看出口位置、每种颜色的数量和棋盘中央的空格，找出最容易被堵死的那条路线。</p>
+          </div>
+          <div class="card">
+            <div class="num">2</div>
+            <h3>先处理选择最少的颜色</h3>
+            <p>只有一条通路、或者出口快被围住的颜色，应该趁早送走。路线多的颜色可以稍后再处理。</p>
+          </div>
+          <div class="card">
+            <div class="num">3</div>
+            <h3>保持中间通道畅通</h3>
+            <p>大多数方块都要经过棋盘中央。把暂时不动的方块停在边缘，别让它挡住别人唯一的路。</p>
+          </div>
+          <div class="card">
+            <div class="num">4</div>
+            <h3>看准电梯和生成器</h3>
+            <p>电梯会让通路在移动中改变，生成器会继续投放方块。等机关到位，或者先清掉新方块要落下的那一列。</p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>游戏特色与功能</h2>
+        <p class="lead">规则轻、节奏快，但高难关会逼着你提前规划好几步。</p>
+        <div class="grid grid-2">
+          <div class="card">
+            <h3>🛗 移动机关改变路线</h3>
+            <p>电梯和方块生成器不是背景装饰。它们会在关卡中途打乱原本的通路，逼你重新判断什么时候该走、什么时候该等。</p>
+          </div>
+          <div class="card">
+            <h3>🧩 共享棋盘，顺序优先</h3>
+            <p>方块没有各自独立的轨道。一次随意的长距离滑动，可能刚好堵住另一种颜色唯一的出口。</p>
+          </div>
+          <div class="card">
+            <h3>📈 四个难度档位</h3>
+            <p>从 Beginner 到 Expert，颜色数量、通道密度和机关复杂度逐步上升，前期练习惯，后期考规划。</p>
+          </div>
+          <div class="card">
+            <h3>📶 安装后可离线玩</h3>
+            <p>正常游玩不依赖网络，通勤、地铁或飞行模式下都能继续刷关，不用等加载。</p>
+          </div>
+          <div class="card">
+            <h3>🆓 免费下载</h3>
+            <p>游戏可在 Google Play 免费获取。具体内购项目以商店页面为准，不付费也能正常体验关卡。</p>
+          </div>
+          <div class="card">
+            <h3>🧠 一分钟学会，难在精通</h3>
+            <p>移动和配色一眼就懂，但要在有限空间里同时照顾多种颜色，就需要一套稳定的观察顺序。</p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>高手技巧：卡关时先看这里</h2>
+        <div class="grid grid-2">
+          <div class="card">
+            <h3>选择最少的路先走</h3>
+            <p>先送走只有一条通路的方块。等棋盘被其他颜色占满，原本能走的路往往会彻底消失。</p>
+          </div>
+          <div class="card">
+            <h3>绝不要把出口堵住</h3>
+            <p>暂时不用的出口也要保持入口干净。一个停错位置的小方块，可能让整种颜色都无法清空。</p>
+          </div>
+          <div class="card">
+            <h3>先清完一种颜色</h3>
+            <p>同时开两三条战线，会让棋盘出现更多半清空颜色。集中处理一边，路线更容易读，也更少互相挡道。</p>
+          </div>
+          <div class="card">
+            <h3>死局就早点重开</h3>
+            <p>如果所有剩余方块都没有完整通路，继续试只会浪费时间。记住布局，重开后通常几步就能打开局面。</p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>常见问题</h2>
+        <details open>
+          <summary>Block Out! - Color Sort Puzzle 怎么玩？</summary>
+          <p>
+            沿着空的通道滑动彩色方块，把它送进颜色相同的出口。方块进入出口后会消失，清空棋盘即可过关。
+            难点在于所有方块共享同一片空间，移动顺序会直接影响其他颜色还能不能走。
+          </p>
+        </details>
+        <details>
+          <summary>Block Out! 免费吗？</summary>
+          <p>
+            可以免费下载和游玩。游戏可在 Google Play 获取，是否包含可选内购以商店页面为准；
+            本站的关卡攻略和视频都可以免费查看，不需要注册。
+          </p>
+        </details>
+        <details>
+          <summary>一共多少个关卡？</summary>
+          <p>
+            攻略站目前收录 883 个关卡编号，覆盖四个难度档位，其中 879 关已有完整的视频通关演示。
+            新关卡会随着游戏更新和视频发布继续补充；暂未收录视频的编号只显示占位信息，不单独生成关卡页。
+          </p>
+        </details>
+        <details>
+          <summary>卡关时去哪里找答案？</summary>
+          <p>
+            可以前往
+            <a href="https://block-out.org/levels" target="_blank" rel="noopener"
+              >Block Out Guide 的关卡库</a
+            >，按关卡号直接搜索。每个关卡页会给出棋盘截图、难度评级和对应的 YouTube 演示视频，
+            部分关卡还附有文字策略说明。
+          </p>
+        </details>
+        <details>
+          <summary>为什么我总是在同一关卡住？</summary>
+          <p>
+            常见的死局不是颜色不够，而是太早把方块推进了中央通道。高难关卡里，先移动选择最少的颜色，
+            保持中间路线畅通，并给电梯和生成器留出反应时间，通常比追求一步滑到底更可靠。
+          </p>
+        </details>
+        <details>
+          <summary>可以离线玩吗？</summary>
+          <p>可以。安装后 Block Out! - Color Sort Puzzle 支持离线游玩，正常闯关不需要联网。</p>
+        </details>
+      </section>
+
+      <section>
+        <h2>Block Out Guide 能帮你什么</h2>
+        <p class="lead">
+          <a href="https://block-out.org/" target="_blank" rel="noopener">block-out.org</a>
+          是由玩家制作的非官方攻略站，覆盖关卡答案、视频演示、区间导航与进阶策略。
+        </p>
+        <div class="stats">
+          <div class="stat"><b>883</b><span>关卡编号</span></div>
+          <div class="stat"><b>879</b><span>视频通关关卡</span></div>
+          <div class="stat"><b>40 关</b><span>一组，快速跳转</span></div>
+          <div class="stat"><b>免费</b><span>无需注册即可查看</span></div>
+        </div>
+        <div class="grid grid-3" style="margin-top: 16px">
+          <div class="card">
+            <h3>关卡库</h3>
+            <p>
+              按关卡号查找对应的棋盘和视频，
+              <a href="https://block-out.org/levels" target="_blank" rel="noopener">前往关卡库 →</a>
+            </p>
+          </div>
+          <div class="card">
+            <h3>精选关卡</h3>
+            <p>
+              玩家搜索最多的热门棋盘与后期难关，
+              <a href="https://block-out.org/featured" target="_blank" rel="noopener">查看精选攻略 →</a>
+            </p>
+          </div>
+          <div class="card">
+            <h3>玩法与关卡日志</h3>
+            <p>
+              从基础规则到每 100 关的难点拆解，
+              <a href="https://block-out.org/blog" target="_blank" rel="noopener">阅读攻略文章 →</a>
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>同类攻略</h2>
+        <div class="grid grid-3">
+          <div class="card">
+            <h3>🐜 Food Hunt: Pixel Puzzle</h3>
+            <p>
+              点击颜色放出蚂蚁、啃光所有同色像素的解谜游戏，
+              <a href="food-hunt.html">查看 Food Hunt 玩法介绍与攻略 →</a>
+            </p>
+          </div>
+          <div class="card">
+            <h3>🐱 Meowdoku</h3>
+            <p>
+              把数独约束和扫雷式推理结合的猫咪逻辑解谜，
+              <a href="meowdoku.html">查看 Meowdoku 玩法介绍与攻略 →</a>
+            </p>
+          </div>
+          <div class="card">
+            <h3>🏖️ Sand Blocks: Drop Puzzle</h3>
+            <p>
+              拉动彩色沙块填满凹槽的物理流沙解谜，
+              <a href="sand-blocks.html">查看 Sand Blocks 玩法介绍与攻略 →</a>
+            </p>
+          </div>
+        </div>
+        <p class="lead" style="margin-top: 16px">
+          想再找几款同一路数的休闲解谜，可以看看
+          <a href="casualgames.html">CasualGames 综合攻略介绍</a>，里面整理了 Food Hunt、Sand Blocks、Meowdoku、Pixel Flow 等作品的玩法与关卡导航。
+        </p>
+      </section>
+
+      <div class="cta">
+        <h2>卡在某一关？直接看通关视频</h2>
+        <p>
+          每个关卡都配有棋盘截图和完整视频演示，先按关卡号找到你的布局，再回游戏照着走一遍。
+        </p>
+        <a
+          class="btn"
+          href="https://block-out.org/levels"
+          target="_blank"
+          rel="noopener"
+          >访问 block-out.org →</a
+        >
+      </div>
+    </main>
+
+    <footer>
+      <div class="wrap">
+        <p>
+          本页为 Block Out! - Color Sort Puzzle 玩法与功能的中文介绍，攻略内容来自
+          <a href="https://block-out.org/" target="_blank" rel="noopener">block-out.org</a>。
+        </p>
+        <p>非官方网站，Block Out! - Color Sort Puzzle 及其相关素材版权归各自所有者所有。</p>
+      </div>
+    </footer>
+  </body>
+</html>
