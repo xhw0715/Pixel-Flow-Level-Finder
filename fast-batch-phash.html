@@ -1,8 +1,8 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>快速批量生成 pHash (多线程)</title>
+    <title>Fast Batch pHash Generator (Multithreaded)</title>
     <style>
       body {
         font-family: sans-serif;
@@ -72,6 +72,7 @@
       }
       .stats {
         display: flex;
+        flex-wrap: wrap;
         gap: 2rem;
         margin: 1rem 0;
         font-size: 14px;
@@ -81,13 +82,22 @@
         background: #e3f2fd;
         border-radius: 4px;
       }
+      @media (max-width: 520px) {
+        .stats {
+          gap: 0.75rem;
+        }
+        .stat-item {
+          flex: 1 1 calc(50% - 0.75rem);
+          min-width: 0;
+        }
+      }
     </style>
   </head>
   <body>
-    <h2>⚡ 快速批量生成 RGB 三通道 pHash (多线程)</h2>
+    <h2>⚡ Fast batch RGB three-channel pHash generator (multithreaded)</h2>
     <p>
-      使用多个 Web Worker 并行处理，速度提升 4-8 倍！<br />
-      配置: 中心裁剪 75%, 标准尺寸 128×128, 输出 192 位 16 进制
+      Uses multiple Web Workers in parallel for a 4-8x speedup.<br />
+      Settings: center crop 75%, 128x128 canvas, 192 hexadecimal characters.
     </p>
 
     <input
@@ -101,14 +111,14 @@
       id="select-btn"
       onclick="document.getElementById('file-input').click()"
     >
-      选择图片文件
+      Select image files
     </button>
 
     <div class="stats">
-      <div class="stat-item">总数: <strong id="total-count">0</strong></div>
-      <div class="stat-item">已完成: <strong id="done-count">0</strong></div>
-      <div class="stat-item">速度: <strong id="speed">0</strong> 张/秒</div>
-      <div class="stat-item">预计剩余: <strong id="eta">--</strong></div>
+      <div class="stat-item">Total: <strong id="total-count">0</strong></div>
+      <div class="stat-item">Done: <strong id="done-count">0</strong></div>
+      <div class="stat-item">Speed: <strong id="speed">0</strong> images/sec</div>
+      <div class="stat-item">ETA: <strong id="eta">--</strong></div>
     </div>
 
     <div class="progress-bar">
@@ -129,7 +139,7 @@
       const speedEl = document.getElementById("speed");
       const etaEl = document.getElementById("eta");
 
-      // 创建 Web Worker 代码
+      // Create the Web Worker code.
       const workerCode = `
         self.onmessage = function(e) {
           const { redPixels, greenPixels, bluePixels, size, levelId } = e.data;
@@ -187,7 +197,7 @@
         }
       `;
 
-      // 创建多个 Worker (根据 CPU 核心数)
+      // Create multiple Workers based on the CPU core count.
       const workerCount = navigator.hardwareConcurrency || 4;
       const workers = [];
       const blob = new Blob([workerCode], { type: "application/javascript" });
@@ -215,16 +225,16 @@
         doneCountEl.textContent = 0;
         selectBtn.disabled = true;
 
-        resultsDiv.innerHTML = "<h3>处理中...</h3>";
+        resultsDiv.innerHTML = "<h3>Processing...</h3>";
         jsonOutput.innerHTML = "";
 
-        // 预加载所有图片到队列
+        // Queue every selected image.
         taskQueue = [];
         for (const file of files) {
           taskQueue.push(file);
         }
 
-        // 启动所有 Worker
+        // Start every Worker.
         workers.forEach((w) => processNext(w));
 
         fileInput.value = "";
@@ -233,7 +243,7 @@
       function processNext(workerObj) {
         if (taskQueue.length === 0) {
           workerObj.busy = false;
-          // 检查是否全部完成
+          // Check whether all files are complete.
           if (processedCount === totalFiles) {
             displayJSON();
             selectBtn.disabled = false;
@@ -265,7 +275,7 @@
         canvas.width = size;
         canvas.height = size;
 
-        // 自适应裁剪
+        // Adaptive center crop.
         const sw = img.width;
         const sh = img.height;
         const cropRatio = 0.75;
@@ -276,7 +286,7 @@
 
         ctx.drawImage(img, sx, sy, cropW, cropH, 0, 0, size, size);
 
-        // 获取 RGB 三通道数据
+        // Read the RGB channel data.
         const imageData = ctx.getImageData(0, 0, size, size).data;
         const redPixels = new Float32Array(size * size);
         const greenPixels = new Float32Array(size * size);
@@ -289,7 +299,7 @@
           bluePixels[idx] = imageData[i + 2];
         }
 
-        // 发送给 Worker
+        // Send the pixel data to the Worker.
         workerObj.worker.postMessage({
           redPixels: redPixels,
           greenPixels: greenPixels,
@@ -299,7 +309,7 @@
         });
       }
 
-      // 设置所有 Worker 的消息处理
+      // Set up message handlers for every Worker.
       workers.forEach((workerObj) => {
         workerObj.worker.onmessage = function (e) {
           const { hash, levelId } = e.data;
@@ -307,36 +317,36 @@
           hashes[levelId] = hash;
           processedCount++;
 
-          // 更新进度
+          // Update progress.
           const progress = (processedCount / totalFiles) * 100;
           progressFill.style.width = progress + "%";
           progressFill.textContent = Math.round(progress) + "%";
 
           doneCountEl.textContent = processedCount;
 
-          // 计算速度和预计时间
+          // Calculate speed and remaining time.
           const elapsed = (Date.now() - startTime) / 1000;
           const speed = (processedCount / elapsed).toFixed(1);
           speedEl.textContent = speed;
 
           const remaining = totalFiles - processedCount;
           const eta = remaining / speed;
-          etaEl.textContent = eta > 0 ? Math.ceil(eta) + "秒" : "完成";
+          etaEl.textContent = eta > 0 ? Math.ceil(eta) + " sec" : "Done";
 
-          // 显示日志
+          // Show the log entry.
           const logItem = document.createElement("div");
           logItem.className = "log-item";
           logItem.textContent = `✓ [${processedCount}/${totalFiles}] ${levelId}`;
           resultsDiv.appendChild(logItem);
           resultsDiv.scrollTop = resultsDiv.scrollHeight;
 
-          // 处理下一个任务
+          // Process the next task.
           processNext(workerObj);
         };
       });
 
       function displayJSON() {
-        // 按 level 数字排序
+        // Sort by level number.
         const sortedHashes = Object.keys(hashes)
           .sort((a, b) => {
             const numA = parseInt(a.replace(/\D/g, "")) || 0;
@@ -349,9 +359,9 @@
           }, {});
 
         const json = JSON.stringify(sortedHashes, null, 2);
-        jsonOutput.innerHTML = `<strong>✅ 生成完成！(复制或自动下载)</strong>\n\n${json}`;
+        jsonOutput.innerHTML = `<strong>✅ Generation complete (copy or use the automatic download).</strong>\n\n${json}`;
 
-        // 自动下载 JSON
+        // Download the JSON automatically.
         const dataStr =
           "data:text/json;charset=utf-8," + encodeURIComponent(json);
         const downloadAnchor = document.createElement("a");
@@ -359,7 +369,7 @@
         downloadAnchor.setAttribute("download", "level-hashes.json");
         downloadAnchor.click();
 
-        console.log(`✅ 完成！共处理 ${Object.keys(hashes).length} 张图片`);
+        console.log(`✅ Done. Processed ${Object.keys(hashes).length} images.`);
       }
     </script>
   </body>

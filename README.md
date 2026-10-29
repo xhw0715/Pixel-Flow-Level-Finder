@@ -77,6 +77,7 @@ Each hash is a **192-character hex string** (768 bits = 256 bits × 3 channels: 
 ├── sand-blocks.html        # Sand Blocks: Drop Puzzle guide landing page (links to sand-blocks.org)
 ├── food-hunt.html          # Food Hunt: Pixel Puzzle guide landing page (links to food-hunt.org)
 ├── block-out.html          # Block Out! - Color Sort Puzzle guide landing page (links to block-out.org)
+├── bus-traffic-fever.html  # Bus Traffic Fever! guide landing page (links to bus-traffic-fever.com)
 ├── phash-worker.js         # Standalone Web Worker for pHash computation
 ├── server.js               # Minimal static file server (Node.js)
 ├── level-hashes.json       # Precomputed hash database
@@ -95,6 +96,7 @@ Each hash is a **192-character hex string** (768 bits = 256 bits × 3 channels: 
 - Sand Blocks: Drop Puzzle Guide: [https://sand-blocks.org](https://sand-blocks.org)
 - Food Hunt: Pixel Puzzle Guide: [https://food-hunt.org](https://food-hunt.org)
 - Block Out! - Color Sort Puzzle Guide: [https://block-out.org](https://block-out.org)
+- Bus Traffic Fever! Guide: [https://bus-traffic-fever.com](https://bus-traffic-fever.com)
 - Other Casual Games Guide: [https://mobilecasualgames.com](https://mobilecasualgames.com)
 - CasualGames hub intro page: [casualgames.html](casualgames.html)
 

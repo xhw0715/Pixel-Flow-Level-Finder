@@ -1,12 +1,12 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CasualGames 是什么？七款休闲解谜、8,019 关攻略的综合导航站</title>
+    <title>What Is CasualGames? A Guide Hub for Seven Casual Puzzles and 8,019 Levels</title>
     <meta
       name="description"
-      content="CasualGames（mobilecasualgames.com）是一个综合性的休闲解谜攻略站，把 Food Hunt、Meowdoku、Pixel Flow、Sand Blocks、Colony Flow、Smash Fest、Rotate Rings 七款热门手游的关卡攻略汇总到一处，共 8,019 个关卡，每关配视频解法，卡关的棋盘还有分步图文讲解。"
+      content="CasualGames (mobilecasualgames.com) is a guide hub for seven popular casual puzzle games, including Food Hunt, Meowdoku, Pixel Flow, Sand Blocks, Colony Flow, Smash Fest, and Rotate Rings, with 8,019 levels, video solutions, and step-by-step notes."
     />
     <meta name="theme-color" content="#409eff" />
     <link rel="canonical" href="https://mobilecasualgames.com/" />
@@ -22,29 +22,17 @@
         --line: #dbe8f7;
         --shadow: 0 6px 24px rgba(20, 80, 143, 0.08);
       }
-      * {
-        box-sizing: border-box;
-      }
-      html {
-        scroll-behavior: smooth;
-      }
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
       body {
         margin: 0;
         background: var(--bg);
         color: var(--ink);
-        font-family:
-          -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei",
-          "Segoe UI", Roboto, Arial, sans-serif;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
         line-height: 1.75;
       }
-      a {
-        color: var(--brand-dark);
-      }
-      .wrap {
-        max-width: 960px;
-        margin: 0 auto;
-        padding: 0 20px;
-      }
+      a { color: var(--brand-dark); }
+      .wrap { max-width: 960px; margin: 0 auto; padding: 0 20px; }
       header.top {
         position: sticky;
         top: 0;
@@ -60,6 +48,7 @@
         gap: 12px;
         height: 64px;
       }
+      header.top .btn { white-space: nowrap; }
       .logo {
         display: flex;
         align-items: center;
@@ -68,12 +57,9 @@
         font-size: 17px;
         color: var(--ink);
         text-decoration: none;
+        white-space: nowrap;
       }
-      .logo span {
-        background: var(--brand-soft);
-        border-radius: 4px;
-        padding: 0 6px;
-      }
+      .logo span { background: var(--brand-soft); border-radius: 4px; padding: 0 6px; }
       .btn {
         display: inline-block;
         border-radius: 10px;
@@ -83,23 +69,10 @@
         text-decoration: none;
         transition: transform 0.15s ease, box-shadow 0.15s ease;
       }
-      .btn:active {
-        transform: translateY(1px);
-      }
-      .btn-primary {
-        background: var(--brand);
-        color: #fff;
-        box-shadow: var(--shadow);
-      }
-      .btn-ghost {
-        background: #fff;
-        color: var(--brand-dark);
-        border: 1px solid var(--line);
-      }
-      .hero {
-        text-align: center;
-        padding: 64px 0 40px;
-      }
+      .btn:active { transform: translateY(1px); }
+      .btn-primary { background: var(--brand); color: #fff; box-shadow: var(--shadow); }
+      .btn-ghost { background: #fff; color: var(--brand-dark); border: 1px solid var(--line); }
+      .hero { text-align: center; padding: 64px 0 40px; }
       .hero .kicker {
         display: inline-block;
         font-size: 14px;
@@ -110,60 +83,18 @@
         padding: 4px 14px;
         margin-bottom: 18px;
       }
-      .hero h1 {
-        font-size: clamp(28px, 5vw, 44px);
-        line-height: 1.25;
-        margin: 0 0 16px;
-      }
-      .hero p {
-        color: var(--muted);
-        font-size: 17px;
-        max-width: 720px;
-        margin: 0 auto 28px;
-      }
-      .hero .actions {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 12px;
-        justify-content: center;
-      }
-      section {
-        padding: 32px 0;
-      }
-      h2 {
-        font-size: clamp(22px, 3.5vw, 30px);
-        margin: 0 0 8px;
-      }
-      .lead {
-        color: var(--muted);
-        margin: 0 0 24px;
-      }
-      .grid {
-        display: grid;
-        gap: 16px;
-      }
-      .grid-3 {
-        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      }
-      .grid-2 {
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      }
-      .card {
-        background: var(--card);
-        border: 1px solid var(--line);
-        border-radius: 14px;
-        padding: 20px;
-        box-shadow: var(--shadow);
-      }
-      .card h3 {
-        margin: 0 0 8px;
-        font-size: 17px;
-      }
-      .card p {
-        margin: 0;
-        color: var(--muted);
-        font-size: 15px;
-      }
+      .hero h1 { font-size: clamp(28px, 5vw, 44px); line-height: 1.25; margin: 0 0 16px; }
+      .hero p { color: var(--muted); font-size: 17px; max-width: 720px; margin: 0 auto 28px; }
+      .hero .actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+      section { padding: 32px 0; }
+      h2 { font-size: clamp(22px, 3.5vw, 30px); margin: 0 0 8px; }
+      .lead { color: var(--muted); margin: 0 0 24px; }
+      .grid { display: grid; gap: 16px; }
+      .grid-3 { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+      .grid-2 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+      .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 20px; box-shadow: var(--shadow); }
+      .card h3 { margin: 0 0 8px; font-size: 17px; }
+      .card p { margin: 0; color: var(--muted); font-size: 15px; }
       .card .num {
         display: inline-flex;
         align-items: center;
@@ -177,106 +108,30 @@
         font-size: 15px;
         margin-bottom: 10px;
       }
-      .meta {
-        display: block;
-        margin-top: 10px;
-        font-size: 13px;
-        color: var(--muted);
-      }
-      .meta b {
-        color: var(--brand-dark);
-      }
-      ul.plain {
-        margin: 0;
-        padding-left: 20px;
-        color: var(--muted);
-      }
-      ul.plain li {
-        margin-bottom: 6px;
-      }
-      ul.plain strong {
-        color: var(--ink);
-      }
-      .stats {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-        gap: 16px;
-        text-align: center;
-      }
-      .stat {
-        background: var(--card);
-        border: 1px solid var(--line);
-        border-radius: 14px;
-        padding: 16px 12px;
-        box-shadow: var(--shadow);
-      }
-      .stat b {
-        display: block;
-        font-size: 22px;
-        color: var(--brand-dark);
-      }
-      .stat span {
-        font-size: 14px;
-        color: var(--muted);
-      }
-      details {
-        background: var(--card);
-        border: 1px solid var(--line);
-        border-radius: 12px;
-        padding: 14px 18px;
-        margin-bottom: 10px;
-      }
-      details summary {
-        cursor: pointer;
-        font-weight: 600;
-        list-style: none;
-      }
-      details summary::-webkit-details-marker {
-        display: none;
-      }
-      details summary::before {
-        content: "＋ ";
-        color: var(--brand);
-        font-weight: 700;
-      }
-      details[open] summary::before {
-        content: "－ ";
-      }
-      details p {
-        margin: 10px 0 0;
-        color: var(--muted);
-      }
+      .meta { display: block; margin-top: 10px; font-size: 13px; color: var(--muted); }
+      .meta b { color: var(--ink); }
+      details { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px 18px; margin-bottom: 10px; }
+      details summary { cursor: pointer; font-weight: 600; list-style: none; }
+      details summary::-webkit-details-marker { display: none; }
+      details summary::before { content: "+ "; color: var(--brand); font-weight: 700; }
+      details[open] summary::before { content: "- "; }
+      details p { margin: 10px 0 0; color: var(--muted); }
       .cta {
-        background: linear-gradient(135deg, #14508f, #1f74c8);
+        background: linear-gradient(135deg, #14508f, #2f83cc);
         border-radius: 18px;
         padding: 36px 24px;
         text-align: center;
         color: #fff;
         margin: 24px 0 8px;
       }
-      .cta h2 {
-        color: #fff;
-        margin-bottom: 10px;
-      }
-      .cta p {
-        margin: 0 auto 22px;
-        max-width: 620px;
-        opacity: 0.95;
-      }
-      .cta .btn {
-        background: #fff;
-        color: var(--brand-dark);
-      }
-      footer {
-        border-top: 1px solid var(--line);
-        margin-top: 40px;
-        padding: 28px 0 40px;
-        color: var(--muted);
-        font-size: 14px;
-        text-align: center;
-      }
-      footer a {
-        color: var(--brand-dark);
+      .cta h2 { color: #fff; margin-bottom: 10px; }
+      .cta p { margin: 0 auto 22px; max-width: 620px; opacity: 0.95; }
+      .cta .btn { background: #fff; color: var(--brand-dark); }
+      footer { border-top: 1px solid var(--line); margin-top: 40px; padding: 28px 0 40px; color: var(--muted); font-size: 14px; text-align: center; }
+      footer a { color: var(--brand-dark); }
+      @media (max-width: 480px) {
+        header.top .btn { padding: 8px 12px; font-size: 13px; }
+        .logo { font-size: 15px; }
       }
     </style>
   </head>
@@ -286,275 +141,218 @@
         <a class="logo" href="https://mobilecasualgames.com/" target="_blank" rel="noopener">
           🎮 CasualGames <span>Guide</span>
         </a>
-        <a
-          class="btn btn-primary"
-          href="https://mobilecasualgames.com/games"
-          target="_blank"
-          rel="noopener noreferrer"
-          >浏览全部游戏</a
-        >
+        <a class="btn btn-primary" href="https://mobilecasualgames.com/games" target="_blank" rel="noopener noreferrer">All games</a>
       </div>
     </header>
 
     <main class="wrap">
       <div class="hero">
-        <div class="kicker">综合攻略站 · 七款游戏 · 8,019 个关卡</div>
-        <h1>CasualGames 是什么？<br />一个站，把七款热门休闲解谜的关卡攻略全收进来</h1>
+        <div class="kicker">Guide hub · 7 games · 8,019 levels</div>
+        <h1>What Is CasualGames?<br />One hub for seven popular casual puzzle games and their level guides</h1>
         <p>
-          <a href="https://mobilecasualgames.com/" target="_blank" rel="noopener noreferrer"
-            >mobilecasualgames.com</a
-          >
-          是一个<strong>综合性的手游攻略导航站</strong>。它自己不做游戏，而是把七款热门休闲解谜的关卡解法汇总到一处：
-          你想找的关卡在哪款游戏里，先在这里定位游戏，再顺着关卡号直接跳到对应的视频演示和图文讲解。
-          不用再在好几个攻略站之间来回翻。
+          <a href="https://mobilecasualgames.com/" target="_blank" rel="noopener noreferrer">mobilecasualgames.com</a>
+          is a <strong>guide hub for mobile puzzle games</strong>. It does not make games. Instead, it brings seven
+          popular casual puzzle libraries into one place: choose the game, jump to the block containing your level,
+          and open the matching video or written solution without bouncing between several fan sites.
         </p>
         <div class="actions">
-          <a
-            class="btn btn-primary"
-            href="https://mobilecasualgames.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-            >进入 CasualGames →</a
-          >
-          <a
-            class="btn btn-ghost"
-            href="https://mobilecasualgames.com/games"
-            target="_blank"
-            rel="noopener noreferrer"
-            >按游戏找关卡</a
-          >
+          <a class="btn btn-primary" href="https://mobilecasualgames.com/" target="_blank" rel="noopener noreferrer">Open CasualGames →</a>
+          <a class="btn btn-ghost" href="https://mobilecasualgames.com/games" target="_blank" rel="noopener noreferrer">Find a game</a>
         </div>
       </div>
 
       <section>
-        <h2>它解决什么问题</h2>
-        <p class="lead">休闲解谜的攻略往往散落在各个小站上，找一关要开三四个标签页。</p>
+        <h2>What problem does it solve?</h2>
+        <p class="lead">Casual puzzle guides are scattered across small sites. Finding one level can take several tabs.</p>
         <div class="grid grid-3">
           <div class="card">
             <div class="num">1</div>
-            <h3>一个入口收全</h3>
-            <p>七款游戏的关卡目录做成统一的导航结构，按游戏名进来、按关卡号定位，不用记住每个站各自的入口长什么样。</p>
+            <h3>One entry point</h3>
+            <p>Seven game libraries share one navigation pattern. Choose a game, then a level number, without learning a different site layout each time.</p>
           </div>
           <div class="card">
             <div class="num">2</div>
-            <h3>关卡按 100 关分组</h3>
-            <p>每款游戏的关卡都切成 100 关一组的区块，先跳到你所在的那一段，再逐关往下找，比翻页列表快得多。</p>
+            <h3>Levels grouped by 100</h3>
+            <p>Each game is split into blocks of 100 levels. Jump to your range first, then scan down to the exact board.</p>
           </div>
           <div class="card">
             <div class="num">3</div>
-            <h3>能横向挑下一款</h3>
-            <p>按「蚂蚁群 / 颜色分类 / 逻辑 / 物理 / 解答 / 流向 / 拆除」这些玩法标签筛选，找的是同类玩法而不用先知道游戏名。</p>
+            <h3>Find the next game by genre</h3>
+            <p>Browse tags such as ant swarm, color sorting, logic, physics, deduction, flow, and demolition without knowing a title in advance.</p>
           </div>
         </div>
       </section>
 
       <section>
-        <h2>收录了哪七款游戏</h2>
-        <p class="lead">全部是免费下载的手机解谜，评分与安装量取自各家应用商店。</p>
+        <h2>The seven games in the hub</h2>
+        <p class="lead">All are free mobile puzzles. Ratings and install counts come from their store listings.</p>
         <div class="grid grid-2">
           <div class="card">
             <h3>🐜 Food Hunt: Pixel Puzzle</h3>
             <p>
-              EVERFUN 出品。点一种颜色就放出一群同色蚂蚁，沿着画面把该颜色的像素一口口吃光。
-              没有计时也没有步数限制，全部输赢都在点击顺序上。
-              <span class="meta"><b>1,000,000+</b> 安装 · <b>4.57</b> 分 · 攻略在 food-hunt.org</span>
+              By EVERFUN. Tap a color to release matching ants that eat every pixel of that color. There is no timer
+              or move limit; the entire challenge is the tap order.
+              <span class="meta"><b>1,000,000+</b> installs · <b>4.57</b> rating · Guide at food-hunt.org</span>
             </p>
           </div>
           <div class="card">
             <h3>🐜 Colony Flow!</h3>
             <p>
-              ABI GAMES 出品。指挥蚂蚁沿路线搬运彩色方块，把方块分类归位之后，
-              被遮住的那幅像素画才慢慢显出来。同样是单指点击，过关链条更长。
-              <span class="meta"><b>1,000,000+</b> 安装 · <b>4.15</b> 分 · 攻略在 colony-flow.org</span>
+              By ABI GAMES. Guide ants along routes to carry and sort colored blocks. Clear the blocks and the hidden
+              pixel picture slowly appears. One-finger controls, but longer solution chains.
+              <span class="meta"><b>1,000,000+</b> installs · <b>4.15</b> rating · Guide at colony-flow.org</span>
             </p>
           </div>
           <div class="card">
             <h3>🐱 Meowdoku: Brain Puzzle Games</h3>
             <p>
-              Oakever Games 出品。把数独的约束和扫雷的推理揉在一起：每个色块里恰好放一只猫，
-              猫之间不能同行、同列，也不能相邻。找猫靠推，不靠猜。
-              <span class="meta"><b>10,000,000+</b> 安装 · <b>4.70</b> 分 · 攻略在 meowdokuguide.com</span>
+              By Oakever Games. Sudoku constraints meet Minesweeper-style deduction: one cat per colored region, one
+              per row and column, and no cats touching. Solve by logic, not guessing.
+              <span class="meta"><b>10,000,000+</b> installs · <b>4.70</b> rating · Guide at meowdokuguide.com</span>
             </p>
           </div>
           <div class="card">
             <h3>🏖️ Sand Blocks: Drop Puzzle</h3>
             <p>
-              Rollic Games 出品。拉动彩色流沙填满凹槽、清空棋盘，底下藏着的图案才会现身。
-              看沙子流动本身就很解压，难度却一点不低。
-              <span class="meta">物理流沙玩法 · 攻略在 sand-blocks.org</span>
+              By Rollic Games. Pull colored sand into matching slots to clear the board and reveal the picture beneath.
+              The flow is relaxing; the later layouts are not.
+              <span class="meta">Physics falling-sand puzzle · Guide at sand-blocks.org</span>
             </p>
           </div>
           <div class="card">
             <h3>🎨 Pixel Flow!</h3>
             <p>
-              Loom Games 出品。把每种颜色引到它对应的终点，把缠绕在一起的管线一根根理顺，
-              像素画就自己完成了。关卡越多，棋盘越挤。
-              <span class="meta"><b>10,000,000+</b> 安装 · <b>4.51</b> 分 · 攻略在 pixelflowonline.net</span>
+              By Loom Games. Route every color to its matching endpoint and untangle the pipes one by one. The pixel
+              picture completes itself. Later boards get much tighter.
+              <span class="meta"><b>10,000,000+</b> installs · <b>4.51</b> rating · Guide at pixelflowonline.net</span>
             </p>
           </div>
           <div class="card">
             <h3>💥 Smash Fest!</h3>
             <p>
-              Flow Games 出品。瞄准、砸下，把每一关堆叠的方块全部清掉。
-              单局很短，手感反馈很直接，几百关难度一路往上爬。
-              <span class="meta"><b>1,000,000+</b> 安装 · <b>4.73</b> 分 · 关卡页由 CasualGames 自己托管</span>
+              By Flow Games. Aim and drop to clear each stacked block layout. Short rounds, direct feedback, and
+              hundreds of levels with a steady difficulty climb.
+              <span class="meta"><b>1,000,000+</b> installs · <b>4.73</b> rating · Level pages hosted by CasualGames</span>
             </p>
           </div>
           <div class="card">
             <h3>💍 Rotate Rings</h3>
             <p>
-              Nebula Studio 出品。每张棋盘都是几个互相咬合的圆环，转动每一圈让缺口对齐，
-              层层结构就会依次散开。从简单的 C 形锁一直到三角框架。
-              <span class="meta"><b>1,000,000+</b> 安装 · <b>4.77</b> 分 · 关卡页由 CasualGames 自己托管</span>
+              By Nebula Studio. Each board is a set of interlocking rings. Rotate them to align gaps and release the
+              layers, from simple C-shaped locks to triangular frames.
+              <span class="meta"><b>1,000,000+</b> installs · <b>4.77</b> rating · Level pages hosted by CasualGames</span>
             </p>
           </div>
           <div class="card">
-            <h3>📈 还在继续加</h3>
+            <h3>📈 Still growing</h3>
             <p>
-              新关卡随着攻略视频发布同步收录，读者反馈卡住的棋盘会补上专门写的分步图文讲解，
-              新游戏也在陆续进目录。
-              <span class="meta">当前合计 <b>7</b> 款游戏、<b>8,019</b> 个关卡</span>
+              New levels arrive with new solution videos, reader-reported trouble spots receive written step-by-step
+              notes, and new games are added over time.
+              <span class="meta">Currently <b>7</b> games and <b>8,019</b> levels</span>
             </p>
           </div>
         </div>
       </section>
 
       <section>
-        <h2>攻略是怎么组织起来的</h2>
-        <p class="lead">和「把内容复制一份到自己站上」的聚合站不同，它优先把你送去真正在维护那份攻略的地方。</p>
+        <h2>How the guide is organized</h2>
+        <p class="lead">Unlike aggregators that copy everything onto one site, CasualGames sends you to the place that actually maintains the guide.</p>
         <div class="grid grid-2">
           <div class="card">
-            <h3>每款游戏一个独立页面</h3>
-            <p>从游戏目录点进去就是该游戏的全部关卡，按 100 关一组分块，直接跳到你在的那一段。</p>
+            <h3>One page per game</h3>
+            <p>Open a game from the directory to see its full level list, split into blocks of 100 so you can jump straight to your range.</p>
           </div>
           <div class="card">
-            <h3>每关一个视频解法</h3>
-            <p>已收录的 8,019 个关卡，每一关都配有一个完整的通关视频，照着走就能过。</p>
+            <h3>One video per level</h3>
+            <p>Every one of the 8,019 indexed levels has a complete walkthrough video showing the route.</p>
           </div>
           <div class="card">
-            <h3>有独立攻略站的，直接跳过去</h3>
-            <p>
-              Food Hunt、Colony Flow、Meowdoku、Sand Blocks、Pixel Flow 这五款已经各有自己的专题攻略站，
-              关卡链接会直接落到对应站点，而不是在这里再抄一份。
-            </p>
+            <h3>Direct links to dedicated sites</h3>
+            <p>Food Hunt, Colony Flow, Meowdoku, Sand Blocks, and Pixel Flow each have a dedicated guide site, so level links go there instead of duplicating content.</p>
           </div>
           <div class="card">
-            <h3>没有独立站的就自己托管</h3>
-            <p>Smash Fest! 和 Rotate Rings 目前没有专题站，这两款的关卡页就由 CasualGames 自己提供。</p>
+            <h3>Hosted pages when no site exists</h3>
+            <p>Smash Fest! and Rotate Rings do not have dedicated guide sites yet, so CasualGames hosts their level pages itself.</p>
           </div>
           <div class="card">
-            <h3>卡关的棋盘补图文讲解</h3>
-            <p>在视频之外，读者反馈卡住的那些关卡会额外写一份分步文字攻略，说明每一步为什么这么点。</p>
+            <h3>Extra notes for stuck boards</h3>
+            <p>When readers report a difficult level, the team adds a written sequence explaining why each move is made.</p>
           </div>
           <div class="card">
-            <h3>全部免费，不用注册</h3>
-            <p>没有付费墙、没有下载墙，攻略和文章都可以直接看，也不需要登录账号。</p>
+            <h3>Free, no account</h3>
+            <p>No paywall and no download wall. Guides and articles are open without registration or login.</p>
           </div>
         </div>
       </section>
 
       <section>
-        <h2>常见问题</h2>
+        <h2>Frequently asked questions</h2>
         <details open>
-          <summary>CasualGames 是什么？</summary>
-          <p>
-            一个独立的休闲解谜攻略枢纽站。它收录了七款手机游戏的 8,019 个关卡，每一关都对应一个视频解法，
-            并针对玩家容易卡住的棋盘另外撰写分步图文讲解。它不做游戏，也不是这些游戏的发行方。
-          </p>
+          <summary>What is CasualGames?</summary>
+          <p>An independent hub for casual puzzle guides. It indexes 8,019 levels across seven mobile games, with a video solution for each level and extra written notes for commonly stuck boards. It does not develop or publish the games.</p>
         </details>
         <details>
-          <summary>收录了哪些游戏？</summary>
-          <p>
-            目前是 Food Hunt: Pixel Puzzle、Colony Flow!、Meowdoku: Brain Puzzle Games、
-            Sand Blocks: Drop Puzzle、Pixel Flow!、Smash Fest! 和 Rotate Rings 这七款。
-            每款都有自己的页面，关卡按 100 关一组切块，以后还会继续加入新游戏。
-          </p>
+          <summary>Which games are included?</summary>
+          <p>Food Hunt: Pixel Puzzle, Colony Flow!, Meowdoku: Brain Puzzle Games, Sand Blocks: Drop Puzzle, Pixel Flow!, Smash Fest!, and Rotate Rings. Each has its own page and 100-level navigation blocks.</p>
         </details>
         <details>
-          <summary>怎么找到某一关的攻略？</summary>
-          <p>
-            先在目录里定位游戏，再跳到包含该关卡号的那一组 100 关，顺着往下找。
-            在它自己写了图文讲解的关卡上会有一个攻略标记，点开就是分步说明。
-          </p>
+          <summary>How do I find a specific level?</summary>
+          <p>Choose the game, jump to the 100-level block containing your level, then scan down. Levels with a dedicated written guide have a marker that opens the step-by-step notes.</p>
         </details>
         <details>
-          <summary>为什么点某个关卡会跳到别的网站？</summary>
-          <p>
-            有些游戏已经有专门的专题攻略站在维护同一批关卡解法。为了不重复一份内容，
-            CasualGames 会直接把你送到那个站的关卡页。像 Smash Fest! 这种没有专题站的，关卡页就留在 CasualGames 上。
-          </p>
+          <summary>Why do some level links leave CasualGames?</summary>
+          <p>Several games already have dedicated guide sites maintaining the same solutions. To avoid duplicating content, CasualGames links directly to those level pages. Games without a dedicated site stay on CasualGames.</p>
         </details>
         <details>
-          <summary>要付费或者注册吗？</summary>
-          <p>都不用。所有攻略和文章都可以免费阅读，没有注册、付费墙或下载限制。</p>
+          <summary>Does it cost anything or require registration?</summary>
+          <p>No. Every guide and article is free to read, with no account, paywall, or download requirement.</p>
         </details>
         <details>
-          <summary>和游戏开发方有关系吗？</summary>
-          <p>
-            没有。CasualGames 是玩家自制的攻略站，与它收录的任何开发商或发行商都没有隶属或授权关系，
-            游戏名称、美术素材和商店资料归各自所有者。
-          </p>
+          <summary>Is CasualGames affiliated with the developers?</summary>
+          <p>No. It is an independent fan-made guide. Game names, artwork, and store data belong to their respective owners.</p>
         </details>
       </section>
 
       <section>
-        <h2>同类攻略</h2>
+        <h2>More puzzle guides</h2>
         <div class="grid grid-3">
           <div class="card">
             <h3>🐜 Food Hunt: Pixel Puzzle</h3>
-            <p>
-              放出蚂蚁啃光同色像素的美食主题解谜，
-              <a href="food-hunt.html">查看 Food Hunt 玩法介绍与攻略 →</a>
-            </p>
+            <p>A food-themed pixel puzzle built around ant swarms. <a href="food-hunt.html">Read the Food Hunt guide →</a></p>
           </div>
           <div class="card">
             <h3>🐱 Meowdoku</h3>
-            <p>
-              数独约束叠加扫雷推理的猫咪逻辑解谜，
-              <a href="meowdoku.html">查看 Meowdoku 玩法介绍与攻略 →</a>
-            </p>
+            <p>A cat logic puzzle with Sudoku constraints. <a href="meowdoku.html">Read the Meowdoku guide →</a></p>
           </div>
           <div class="card">
             <h3>🏖️ Sand Blocks: Drop Puzzle</h3>
-            <p>
-              拉动彩色流沙填满凹槽的物理解谜，
-              <a href="sand-blocks.html">查看 Sand Blocks 玩法介绍与攻略 →</a>
-            </p>
+            <p>A physics puzzle about pulling colored sand. <a href="sand-blocks.html">Read the Sand Blocks guide →</a></p>
           </div>
           <div class="card">
             <h3>🧩 Block Out! - Color Sort Puzzle</h3>
-            <p>
-              把彩色方块滑进同色出口、绕开移动机关的滑块解谜，
-              <a href="block-out.html">查看 Block Out 玩法介绍与攻略 →</a>
-            </p>
+            <p>A sliding-block puzzle with matching doors and moving obstacles. <a href="block-out.html">Read the Block Out guide →</a></p>
+          </div>
+          <div class="card">
+            <h3>🚌 Bus Traffic Fever!</h3>
+            <p>A queue-and-bus puzzle about matching passenger colors and managing station slots. <a href="bus-traffic-fever.html">Read the Bus Traffic Fever guide →</a></p>
           </div>
         </div>
       </section>
 
       <div class="cta">
-        <h2>七款游戏、8,019 个关卡，从一个入口进去</h2>
-        <p>
-          先按玩法标签挑游戏，再按关卡号定位视频演示，卡住的地方还有分步图文讲解。
-        </p>
-        <a
-          class="btn"
-          href="https://mobilecasualgames.com/"
-          target="_blank"
-          rel="noopener noreferrer"
-          >访问 mobilecasualgames.com →</a
-        >
+        <h2>Seven games, 8,019 levels, one entry point</h2>
+        <p>Pick a game by play style, jump to a level number, and open the video or written guide when a board jams.</p>
+        <a class="btn" href="https://mobilecasualgames.com/" target="_blank" rel="noopener noreferrer">Visit mobilecasualgames.com →</a>
       </div>
     </main>
 
     <footer>
       <div class="wrap">
         <p>
-          本页为 CasualGames 这款攻略导航站的中文介绍，关卡与游戏资料来自
-          <a href="https://mobilecasualgames.com/" target="_blank" rel="noopener noreferrer"
-            >mobilecasualgames.com</a
-          >。
+          This page is an independent English overview of the CasualGames guide hub. Level and game data come from
+          <a href="https://mobilecasualgames.com/" target="_blank" rel="noopener noreferrer">mobilecasualgames.com</a>.
         </p>
-        <p>非官方网站，收录游戏及其相关素材版权归各自所有者所有。</p>
+        <p>Not an official site. Included games and related assets belong to their respective owners.</p>
       </div>
     </footer>
   </body>

@@ -1,8 +1,8 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>批量生成 pHash</title>
+    <title>Batch pHash Generator</title>
     <style>
       body {
         font-family: sans-serif;
@@ -51,10 +51,11 @@
     </style>
   </head>
   <body>
-    <h2>🔄 批量生成 level_images 的 RGB 三通道 pHash</h2>
+    <h2>🔄 Batch-generate RGB three-channel pHashes for level_images</h2>
     <p>
-      点击按钮选择 level_images 文件夹中的所有图片，生成 RGB 三通道 pHash（768
-      位二进制 = 192 位 16 进制） 以提高匹配精度和颜色区分度
+      Select every image in the level_images folder to generate an RGB
+      three-channel pHash (768 binary bits = 192 hexadecimal characters) with
+      stronger matching precision and color separation.
     </p>
 
     <input
@@ -65,7 +66,7 @@
       style="display: none"
     />
     <button onclick="document.getElementById('file-input').click()">
-      选择图片文件
+      Select image files
     </button>
 
     <div id="results"></div>
@@ -76,17 +77,17 @@
       const resultsDiv = document.getElementById("results");
       const jsonOutput = document.getElementById("json-output");
 
-      // 创建 Web Worker
+      // Create the Web Worker.
       const workerCode = `
       self.onmessage = function(e) {
         const { redPixels, greenPixels, bluePixels, size, levelId } = e.data;
         
-        // 分别计算 RGB 三个通道的 pHash
+        // Compute a pHash for each RGB channel.
         const hashR = calculatePHash(redPixels, size);
         const hashG = calculatePHash(greenPixels, size);
         const hashB = calculatePHash(bluePixels, size);
         
-        // 组合成完整哈希
+        // Combine the channels into one hash.
         const hash = hashR + hashG + hashB;
 
         self.postMessage({ hash, levelId });
@@ -107,7 +108,7 @@
         const average = lowFreq.reduce((a, b) => a + b, 0) / lowFreq.length;
         const binaryHash = lowFreq.map(v => (v > average ? "1" : "0")).join("");
         
-        // 转换为 16 进制
+        // Convert to hexadecimal.
         let hexHash = "";
         for (let i = 0; i < binaryHash.length; i += 4) {
           const chunk = binaryHash.substr(i, 4);
@@ -150,14 +151,14 @@
         totalFiles = files.length;
         processedCount = 0;
 
-        resultsDiv.innerHTML = "<h3>处理中...</h3>";
+        resultsDiv.innerHTML = "<h3>Processing...</h3>";
         jsonOutput.innerHTML = "";
 
         for (const file of files) {
           await processFile(file);
         }
 
-        // 重置文件输入框，避免重复弹出
+        // Reset the file input so the same selection can be used again.
         fileInput.value = "";
       };
 
@@ -181,11 +182,11 @@
       function processImage(img, levelId) {
         const canvas = document.createElement("canvas");
         const ctx = canvas.getContext("2d");
-        const size = 128; // 更大的尺寸保留更多细节
+        const size = 128; // A larger canvas preserves more detail.
         canvas.width = size;
         canvas.height = size;
 
-        // 自适应裁剪：提取中心 75% 区域
+        // Adaptive crop: keep the center 75% of the image.
         const sw = img.width;
         const sh = img.height;
         const cropRatio = 0.75;
@@ -194,10 +195,10 @@
         const sx = (sw - cropW) / 2;
         const sy = (sh - cropH) / 2;
 
-        // 缩放到标准尺寸 128×128
+        // Resize to the standard 128x128 canvas.
         ctx.drawImage(img, sx, sy, cropW, cropH, 0, 0, size, size);
 
-        // 获取 RGB 三通道数据
+        // Read the RGB channel data.
         const imageData = ctx.getImageData(0, 0, size, size).data;
         const redPixels = new Float32Array(size * size);
         const greenPixels = new Float32Array(size * size);
@@ -210,7 +211,7 @@
           bluePixels[idx] = imageData[i + 2];
         }
 
-        // 发送给 Worker
+        // Send the pixel data to the Worker.
         worker.postMessage({
           redPixels: redPixels,
           greenPixels: greenPixels,
@@ -226,7 +227,7 @@
         hashes[levelId] = hash;
         processedCount++;
 
-        // 显示进度
+        // Show progress.
         const logItem = document.createElement("div");
         logItem.className = "log-item";
         logItem.textContent = `✓ ${levelId}: ${hash}`;
@@ -240,7 +241,7 @@
 
       function displayJSON() {
         console.log("displayJSON");
-        // 按照 level 数字排序
+        // Sort by level number.
         const sortedHashes = Object.keys(hashes)
           .sort((a, b) => {
             const numA = parseInt(a.replace(/\D/g, "")) || 0;
@@ -253,9 +254,9 @@
           }, {});
 
         const json = JSON.stringify(sortedHashes, null, 2);
-        jsonOutput.innerHTML = `<strong>生成的 JSON (复制保存为 level-hashes.json):</strong>\n\n${json}`;
+        jsonOutput.innerHTML = `<strong>Generated JSON (copy and save as level-hashes.json):</strong>\n\n${json}`;
 
-        // 自动下载 JSON
+        // Download the JSON automatically.
         const dataStr =
           "data:text/json;charset=utf-8," + encodeURIComponent(json);
         const downloadAnchor = document.createElement("a");

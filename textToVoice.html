@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta
@@ -7,7 +7,7 @@
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <title>语音播报</title>
+    <title>Text-to-Speech Demo</title>
     <style>
       * {
         margin: 0;
@@ -130,12 +130,12 @@
   </head>
   <body>
     <div class="controls">
-      <label for="voiceSelect">选择播报员</label>
+      <label for="voiceSelect">Voice</label>
       <select id="voiceSelect">
-        <option value="">加载中...</option>
+        <option value="">Loading...</option>
       </select>
       <div class="rate-row">
-        <label for="rateRange">语速</label>
+        <label for="rateRange">Rate</label>
         <input
           type="range"
           id="rateRange"
@@ -149,24 +149,24 @@
     </div>
 
     <div id="speakBox">
-      <h2>主标题：网页语音播报演示</h2>
-      <p>这是父盒子里的文本，会被完整播报</p>
+      <h2>Web Speech Demo</h2>
+      <p>This paragraph belongs to the parent container and is read in full.</p>
       <div class="child-box">
-        <span>这是第一层子盒子的文本</span>
+        <span>This text belongs to the first nested container.</span>
         <div class="child-box">
-          <b>这是第二层嵌套子盒子的文本</b>
-          <p>这是第三层嵌套的内容，全部都会被读取！</p>
+          <b>This text belongs to the second nested container.</b>
+          <p>This third-level content is also included in the narration.</p>
         </div>
       </div>
-      <p>接口返回的动态文字、静态文字都支持</p>
+      <p>Both static text and text returned by an API are supported.</p>
     </div>
 
     <div class="btn-row">
-      <button class="btn btn-play" id="btnPlay">▶ 播报</button>
-      <button class="btn btn-pause" id="btnPause">⏸ 暂停</button>
-      <button class="btn btn-stop" id="btnStop">■ 停止</button>
+      <button class="btn btn-play" id="btnPlay">▶ Play</button>
+      <button class="btn btn-pause" id="btnPause">⏸ Pause</button>
+      <button class="btn btn-stop" id="btnStop">■ Stop</button>
     </div>
-    <div id="tip">点击「播报」开始语音</div>
+    <div id="tip">Click Play to start narration.</div>
 
     <script>
       const rateRange = document.getElementById("rateRange");
@@ -181,7 +181,7 @@
         rateVal.textContent = parseFloat(rateRange.value).toFixed(1);
       });
 
-      // ── 检测 speechSynthesis 是否可用 ──────────────────────────────
+      // Check whether speechSynthesis is available.
       const USE_SYNTH = (() => {
         try {
           return !!(window.speechSynthesis && window.SpeechSynthesisUtterance);
@@ -191,28 +191,28 @@
       })();
 
       if (!USE_SYNTH) {
-        // 不支持时隐藏播报员选择（降级方案无法切换音色）
+        // Hide voice selection when the native API is unavailable.
         voiceSelect.closest(".controls").style.display = "none";
-        tip.textContent = "当前浏览器不支持原生语音，已切换为在线TTS";
+        tip.textContent = "Native speech is unavailable; using online TTS.";
       }
 
       // ══════════════════════════════════════════════════════════════
-      // 方案A：Web Speech API
+      // Option A: Web Speech API.
       // ══════════════════════════════════════════════════════════════
       const synth = USE_SYNTH ? window.speechSynthesis : null;
       let voices = [],
-        chineseVoices = [];
+        preferredVoices = [];
 
       function loadVoices() {
         voices = synth.getVoices();
-        chineseVoices = voices.filter(
+        preferredVoices = voices.filter(
           (v) =>
-            v.lang.startsWith("zh") || v.name.toLowerCase().includes("chinese"),
+            v.lang.startsWith("en") || v.name.toLowerCase().includes("english"),
         );
-        if (!chineseVoices.length) chineseVoices = voices;
+        if (!preferredVoices.length) preferredVoices = voices;
 
-        voiceSelect.innerHTML = '<option value="">默认语音</option>';
-        chineseVoices.forEach((v, i) => {
+        voiceSelect.innerHTML = '<option value="">Default voice</option>';
+        preferredVoices.forEach((v, i) => {
           const opt = document.createElement("option");
           opt.value = i;
           opt.textContent = `${v.name} (${v.lang})`;
@@ -233,29 +233,29 @@
         clearInterval(resumeTimer);
 
         const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = "zh-CN";
+        utterance.lang = "en-US";
         utterance.rate = parseFloat(rateRange.value);
         utterance.volume = 1;
 
         const idx = voiceSelect.value;
-        if (idx !== "" && chineseVoices[idx])
-          utterance.voice = chineseVoices[idx];
+        if (idx !== "" && preferredVoices[idx])
+          utterance.voice = preferredVoices[idx];
 
         utterance.onstart = () => {
-          tip.textContent = "🔊 正在播报...";
+          tip.textContent = "🔊 Speaking...";
         };
         utterance.onend = () => {
-          tip.textContent = "✅ 播报完成";
+          tip.textContent = "✅ Narration complete";
           clearInterval(resumeTimer);
         };
         utterance.onerror = (e) => {
-          tip.textContent = `❌ 播报出错: ${e.error}`;
+          tip.textContent = `❌ Speech error: ${e.error}`;
           clearInterval(resumeTimer);
         };
 
         synth.speak(utterance);
 
-        // iOS 长文本静默停止修复
+        // Work around iOS silently stopping long narrations.
         resumeTimer = setInterval(() => {
           if (!synth.speaking) {
             clearInterval(resumeTimer);
@@ -269,28 +269,28 @@
       }
 
       // ══════════════════════════════════════════════════════════════
-      // 方案B：百度翻译 TTS 降级（微信/不支持 speechSynthesis 的环境）
-      // 单次最多约200字，超出自动分段顺序播放
+      // Option B: Baidu TTS fallback for browsers without speechSynthesis.
+      // Long text is split into chunks and played in order.
       // ══════════════════════════════════════════════════════════════
-      const CHUNK_SIZE = 180; // 百度TTS单次安全字数
-      let audioQueue = []; // 分段 Audio 队列
+      const CHUNK_SIZE = 180; // Safe chunk size for the fallback service.
+      let audioQueue = []; // Queue of chunk audio URLs.
       let currentAudio = null;
       let stopped = false;
 
       function baiduTtsUrl(text) {
-        return `https://tts.baidu.com/text2audio?lan=zh&ie=UTF-8&spd=5&text=${encodeURIComponent(text)}`;
+        return `https://tts.baidu.com/text2audio?lan=en&ie=UTF-8&spd=5&text=${encodeURIComponent(text)}`;
       }
 
-      // 将文本按标点或字数切分
+      // Split text at sentence boundaries or by character count.
       function splitText(text, size) {
         const chunks = [];
-        // 先按句子切（。！？；\n），再按 size 截断
-        const sentences = text.split(/(?<=[。！？；\n])/);
+        // Split by sentence punctuation first, then enforce the size limit.
+        const sentences = text.split(/(?<=[.!?;\n])/);
         let buf = "";
         for (const s of sentences) {
           if ((buf + s).length > size) {
             if (buf) chunks.push(buf.trim());
-            // 单句超长则强制截断
+            // Force-split any sentence that exceeds the limit.
             let tmp = s;
             while (tmp.length > size) {
               chunks.push(tmp.slice(0, size));
@@ -307,7 +307,7 @@
 
       function playNextChunk() {
         if (stopped || !audioQueue.length) {
-          if (!stopped) tip.textContent = "✅ 播报完成";
+          if (!stopped) tip.textContent = "✅ Narration complete";
           currentAudio = null;
           return;
         }
@@ -316,15 +316,15 @@
         currentAudio = audio;
         audio.playbackRate = parseFloat(rateRange.value);
         audio.onplay = () => {
-          tip.textContent = "🔊 正在播报...";
+          tip.textContent = "🔊 Speaking...";
         };
         audio.onended = playNextChunk;
         audio.onerror = () => {
-          tip.textContent = "❌ TTS加载失败，请检查网络";
-          playNextChunk(); // 跳过当前段继续
+          tip.textContent = "❌ TTS failed to load. Check your connection.";
+          playNextChunk(); // Skip the failed chunk.
         };
         audio.play().catch(() => {
-          tip.textContent = "❌ 音频播放被阻止";
+          tip.textContent = "❌ Audio playback was blocked.";
         });
       }
 
@@ -333,7 +333,7 @@
         stopped = false;
         const chunks = splitText(text, CHUNK_SIZE);
         audioQueue = chunks.map(baiduTtsUrl);
-        tip.textContent = `共 ${chunks.length} 段，加载中...`;
+        tip.textContent = `${chunks.length} chunks. Loading...`;
         playNextChunk();
       }
 
@@ -356,26 +356,26 @@
       }
 
       // ══════════════════════════════════════════════════════════════
-      // 统一按钮事件
+      // Shared button handlers.
       // ══════════════════════════════════════════════════════════════
       btnPlay.addEventListener("click", () => {
         const text = document.getElementById("speakBox").innerText.trim();
         if (!text) {
-          tip.textContent = "没有可播报的内容";
+          tip.textContent = "There is no text to read.";
           return;
         }
 
         if (USE_SYNTH) {
           if (synth.paused) {
             synth.resume();
-            tip.textContent = "🔊 继续播报...";
+            tip.textContent = "🔊 Resuming...";
           } else {
             synthPlay(text);
           }
         } else {
           if (currentAudio && currentAudio.paused) {
             ttsResume();
-            tip.textContent = "🔊 继续播报...";
+            tip.textContent = "🔊 Resuming...";
           } else {
             ttsPlay(text);
           }
@@ -386,11 +386,11 @@
         if (USE_SYNTH) {
           if (synth.speaking && !synth.paused) {
             synth.pause();
-            tip.textContent = "⏸ 已暂停";
+            tip.textContent = "⏸ Paused";
           }
         } else {
           ttsPause();
-          tip.textContent = "⏸ 已暂停";
+          tip.textContent = "⏸ Paused";
         }
       });
 
@@ -401,7 +401,7 @@
         } else {
           ttsStop();
         }
-        tip.textContent = "■ 已停止";
+        tip.textContent = "■ Stopped";
       });
     </script>
   </body>

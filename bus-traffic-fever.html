@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>What Is Bus Traffic Fever!? Queue-and-Bus Gameplay, Rules, and Full Level Guide</title>
+    <meta
+      name="description"
+      content="Bus Traffic Fever! is a queue-and-bus puzzle from GOODROID where passengers rotate past a boarding entrance and you dispatch matching colored buses. Learn the rules, station-slot strategy, and browse 240 video walkthroughs at bus-traffic-fever.com."
+    />
+    <meta name="theme-color" content="#2b7fc4" />
+    <link rel="canonical" href="https://bus-traffic-fever.com/" />
+    <style>
+      :root {
+        --bg: #f3f8fd;
+        --card: #ffffff;
+        --ink: #14263d;
+        --muted: #52677f;
+        --brand: #2b7fc4;
+        --brand-dark: #155d96;
+        --brand-soft: #d9ecfc;
+        --line: #d7e7f4;
+        --shadow: 0 6px 24px rgba(21, 93, 150, 0.08);
+      }
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+        line-height: 1.75;
+      }
+      a { color: var(--brand-dark); }
+      .wrap { max-width: 960px; margin: 0 auto; padding: 0 20px; }
+      header.top {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background: rgba(243, 248, 253, 0.92);
+        backdrop-filter: blur(8px);
+        border-bottom: 1px solid var(--line);
+      }
+      header.top .wrap {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        height: 64px;
+      }
+      header.top .btn { white-space: nowrap; }
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 700;
+        font-size: 17px;
+        color: var(--ink);
+        text-decoration: none;
+        white-space: nowrap;
+      }
+      .logo span { background: var(--brand-soft); border-radius: 4px; padding: 0 6px; }
+      .btn {
+        display: inline-block;
+        border-radius: 10px;
+        padding: 10px 18px;
+        font-weight: 600;
+        font-size: 15px;
+        text-decoration: none;
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+      }
+      .btn:active { transform: translateY(1px); }
+      .btn-primary { background: var(--brand); color: #fff; box-shadow: var(--shadow); }
+      .btn-ghost { background: #fff; color: var(--brand-dark); border: 1px solid var(--line); }
+      .hero { text-align: center; padding: 64px 0 40px; }
+      .hero .kicker {
+        display: inline-block;
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--brand-dark);
+        background: var(--brand-soft);
+        border-radius: 999px;
+        padding: 4px 14px;
+        margin-bottom: 18px;
+      }
+      .hero h1 { font-size: clamp(28px, 5vw, 44px); line-height: 1.25; margin: 0 0 16px; }
+      .hero p { color: var(--muted); font-size: 17px; max-width: 720px; margin: 0 auto 28px; }
+      .hero .actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+      section { padding: 32px 0; }
+      h2 { font-size: clamp(22px, 3.5vw, 30px); margin: 0 0 8px; }
+      .lead { color: var(--muted); margin: 0 0 24px; }
+      .grid { display: grid; gap: 16px; }
+      .grid-3 { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+      .grid-2 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+      .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 20px; box-shadow: var(--shadow); }
+      .card h3 { margin: 0 0 8px; font-size: 17px; }
+      .card p { margin: 0; color: var(--muted); font-size: 15px; }
+      .card .num {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        border-radius: 8px;
+        background: var(--brand);
+        color: #fff;
+        font-weight: 700;
+        font-size: 15px;
+        margin-bottom: 10px;
+      }
+      .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 16px; text-align: center; }
+      .stat { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 16px 12px; box-shadow: var(--shadow); }
+      .stat b { display: block; font-size: 22px; color: var(--brand-dark); }
+      .stat span { font-size: 14px; color: var(--muted); }
+      details { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px 18px; margin-bottom: 10px; }
+      details summary { cursor: pointer; font-weight: 600; list-style: none; }
+      details summary::-webkit-details-marker { display: none; }
+      details summary::before { content: "+ "; color: var(--brand); font-weight: 700; }
+      details[open] summary::before { content: "- "; }
+      details p { margin: 10px 0 0; color: var(--muted); }
+      .cta {
+        background: linear-gradient(135deg, #0f4c75, #2b7fc4);
+        border-radius: 18px;
+        padding: 36px 24px;
+        text-align: center;
+        color: #fff;
+        margin: 24px 0 8px;
+      }
+      .cta h2 { color: #fff; margin-bottom: 10px; }
+      .cta p { margin: 0 auto 22px; max-width: 620px; opacity: 0.95; }
+      .cta .btn { background: #fff; color: var(--brand-dark); }
+      footer { border-top: 1px solid var(--line); margin-top: 40px; padding: 28px 0 40px; color: var(--muted); font-size: 14px; text-align: center; }
+      footer a { color: var(--brand-dark); }
+      @media (max-width: 480px) {
+        header.top .btn { padding: 8px 12px; font-size: 13px; }
+        .logo { font-size: 15px; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="top">
+      <div class="wrap">
+        <a class="logo" href="https://bus-traffic-fever.com/" target="_blank" rel="noopener">
+          🚌 Bus Traffic Fever! <span>Guide</span>
+        </a>
+        <a class="btn btn-primary" href="https://bus-traffic-fever.com/levels" target="_blank" rel="noopener">Solutions</a>
+      </div>
+    </header>
+
+    <main class="wrap">
+      <div class="hero">
+        <div class="kicker">Queue-and-bus puzzle · Free to play</div>
+        <h1>What Is Bus Traffic Fever!?<br />Match passengers, dispatch buses, and keep a station slot open</h1>
+        <p>
+          Bus Traffic Fever! is a <strong>free mobile queue-and-bus puzzle</strong> from GOODROID.
+          Color-coded passenger groups rotate around a U-shaped queue toward one boarding entrance.
+          Tap an accessible bus that matches the color at the entrance, send it into a station slot,
+          and clear the lot before every slot fills with the wrong color.
+        </p>
+        <div class="actions">
+          <a class="btn btn-primary" href="https://bus-traffic-fever.com/" target="_blank" rel="noopener">Open the Bus Traffic Fever Guide →</a>
+          <a class="btn btn-ghost" href="https://bus-traffic-fever.com/levels" target="_blank" rel="noopener">Find a level solution</a>
+        </div>
+      </div>
+
+      <section>
+        <h2>Core gameplay: read the entrance, dispatch a match, free the slot</h2>
+        <p class="lead">The rules are simple. The queue and the station row turn color matching into a planning problem.</p>
+        <div class="grid grid-3">
+          <div class="card">
+            <div class="num">1</div>
+            <h3>Read the boarding entrance</h3>
+            <p>The queue carries passenger groups past a single entrance. Only the color at that entrance can board right now.</p>
+          </div>
+          <div class="card">
+            <div class="num">2</div>
+            <h3>Send the matching bus</h3>
+            <p>Tap an accessible bus of the same color. It drives into an open station slot and begins loading its passengers.</p>
+          </div>
+          <div class="card">
+            <div class="num">3</div>
+            <h3>Watch the counter and clear the row</h3>
+            <p>The number under the bus counts down as passengers board. At zero it leaves, the slot opens, and the queue moves on.</p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Four steps to avoid the Out of Slot failure</h2>
+        <div class="grid grid-2">
+          <div class="card">
+            <div class="num">1</div>
+            <h3>Check the entrance before every tap</h3>
+            <p>The useful color changes as the queue rotates. Re-read the entrance after each bus departs instead of repeating the previous move.</p>
+          </div>
+          <div class="card">
+            <div class="num">2</div>
+            <h3>Keep at least one slot free</h3>
+            <p>A free slot gives the next matching bus somewhere to land. A full row of colors that are not boarding is the usual way a run gridlocks.</p>
+          </div>
+          <div class="card">
+            <div class="num">3</div>
+            <h3>Finish one color before opening another</h3>
+            <p>Large passenger groups can need more than one bus. Clear the group in front before spending slots on a color further back in the queue.</p>
+          </div>
+          <div class="card">
+            <div class="num">4</div>
+            <h3>Restart before the row fills</h3>
+            <p>If every station slot holds the wrong color, the next match has nowhere to go. A clean restart is faster than rescuing a dead row.</p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Features and game mechanics</h2>
+        <p class="lead">A one-finger parking puzzle with two constraints: the entrance color and the number of open station slots.</p>
+        <div class="grid grid-2">
+          <div class="card">
+            <h3>🔄 A rotating passenger queue</h3>
+            <p>Groups move around a U-shaped queue toward one boarding point. A color that is far away now may be the next one you need.</p>
+          </div>
+          <div class="card">
+            <h3>🚏 Limited station slots</h3>
+            <p>Every dispatched bus occupies a slot until its counter reaches zero. Sending a mismatched bus wastes time and space at the same time.</p>
+          </div>
+          <div class="card">
+            <h3>🎨 Duplicate colors are normal</h3>
+            <p>Two buses of the same color are not a mistake. A long passenger group may need several loads before the entrance rotates.</p>
+          </div>
+          <div class="card">
+            <h3>📈 Two difficulty tiers</h3>
+            <p>The indexed library has 99 Beginner levels and 141 Intermediate levels. Later boards use longer stops and tighter station space.</p>
+          </div>
+          <div class="card">
+            <h3>🆓 Free to play</h3>
+            <p>The game is free on Google Play and the App Store, with optional purchases and ads depending on the store listing.</p>
+          </div>
+          <div class="card">
+            <h3>🧠 Order beats speed</h3>
+            <p>There is no need to rush. The challenge is choosing which bus to dispatch and when to leave a slot empty for the next group.</p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Expert tips for a jammed station row</h2>
+        <div class="grid grid-2">
+          <div class="card">
+            <h3>Do not park a color that is not boarding</h3>
+            <p>A bus only loads passengers of its own color. A mismatched dispatch holds a slot for the full countdown without clearing the queue.</p>
+          </div>
+          <div class="card">
+            <h3>Use the first bus to buy room</h3>
+            <p>The opening dispatch decides how much space the rest of the queue has. Prefer a move that clears passengers and returns its slot quickly.</p>
+          </div>
+          <div class="card">
+            <h3>Watch the gap between groups</h3>
+            <p>A short group can leave the entrance before a long sequence begins. Use that window to clear a blocking bus instead of starting a new color.</p>
+          </div>
+          <div class="card">
+            <h3>Learn the level, not just the color</h3>
+            <p>Screenshots and videos show the field layout as well as the queue. Watch the first bus enter, then copy the route from the same starting board.</p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Frequently asked questions</h2>
+        <details open>
+          <summary>How do you play Bus Traffic Fever!?</summary>
+          <p>Passengers rotate around a U-shaped queue toward a boarding entrance. Tap an accessible bus whose color matches the entrance; it drives into a free station slot, loads matching passengers, and leaves when its counter reaches zero. Clear the lot without filling every slot with the wrong color.</p>
+        </details>
+        <details>
+          <summary>Is Bus Traffic Fever! free?</summary>
+          <p>Yes. The game is free to download from Google Play and the App Store. It may show ads and offer optional in-app purchases, and every guide page is free to read without registration.</p>
+        </details>
+        <details>
+          <summary>How many levels are there?</summary>
+          <p>The guide currently indexes 240 levels, from Level 1 through Level 240. Of those, 99 are Beginner boards and 141 are Intermediate boards. Each listing has a board image, difficulty tier, and full video walkthrough.</p>
+        </details>
+        <details>
+          <summary>Where can I find a level solution?</summary>
+          <p>Search the <a href="https://bus-traffic-fever.com/levels" target="_blank" rel="noopener">Bus Traffic Fever Guide level library</a> by level number. You can also open the 40-level range containing your board, from Levels 1-40 through Levels 201-240.</p>
+        </details>
+        <details>
+          <summary>Why do I keep running out of station slots?</summary>
+          <p>Most failed runs dispatch buses of a color that is not at the entrance. Those buses occupy slots without clearing the queue. Match the entrance color, keep one slot free, and restart early when the row is full of mismatched colors.</p>
+        </details>
+        <details>
+          <summary>Does Bus Traffic Fever! work offline?</summary>
+          <p>Once installed, normal play does not require a network connection. The guide itself needs a connection to load its pages, board images, and YouTube walkthroughs.</p>
+        </details>
+      </section>
+
+      <section>
+        <h2>What the Bus Traffic Fever Guide covers</h2>
+        <p class="lead">
+          <a href="https://bus-traffic-fever.com/" target="_blank" rel="noopener">bus-traffic-fever.com</a>
+          is a fan-made guide with level pages, board images, video walkthroughs, 40-level range navigation, and strategy articles.
+        </p>
+        <div class="stats">
+          <div class="stat"><b>240</b><span>Level pages</span></div>
+          <div class="stat"><b>240</b><span>Video walkthroughs</span></div>
+          <div class="stat"><b>40 levels</b><span>Per navigation block</span></div>
+          <div class="stat"><b>Free</b><span>No registration required</span></div>
+        </div>
+        <div class="grid grid-3" style="margin-top: 16px">
+          <div class="card">
+            <h3>Level library</h3>
+            <p>Find a board and video by level number. <a href="https://bus-traffic-fever.com/levels" target="_blank" rel="noopener">Open the level library →</a></p>
+          </div>
+          <div class="card">
+            <h3>Featured levels</h3>
+            <p>The 16 most-watched walkthroughs, including late-game trouble spots. <a href="https://bus-traffic-fever.com/featured" target="_blank" rel="noopener">Browse featured solutions →</a></p>
+          </div>
+          <div class="card">
+            <h3>Strategy and level logs</h3>
+            <p>Queue reading, slot management, and range-by-range notes. <a href="https://bus-traffic-fever.com/blog" target="_blank" rel="noopener">Read the guide articles →</a></p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>More puzzle guides</h2>
+        <div class="grid grid-3">
+          <div class="card">
+            <h3>🐜 Food Hunt: Pixel Puzzle</h3>
+            <p>Release ants to eat matching pixels. <a href="food-hunt.html">Read the Food Hunt guide →</a></p>
+          </div>
+          <div class="card">
+            <h3>🐱 Meowdoku</h3>
+            <p>A cat-themed logic puzzle with Sudoku constraints. <a href="meowdoku.html">Read the Meowdoku guide →</a></p>
+          </div>
+          <div class="card">
+            <h3>🏖️ Sand Blocks: Drop Puzzle</h3>
+            <p>Pull colored sand into matching slots. <a href="sand-blocks.html">Read the Sand Blocks guide →</a></p>
+          </div>
+          <div class="card">
+            <h3>🧩 Block Out! - Color Sort Puzzle</h3>
+            <p>Slide colored blocks into matching doors. <a href="block-out.html">Read the Block Out guide →</a></p>
+          </div>
+        </div>
+        <p class="lead" style="margin-top: 16px">
+          Browse the <a href="casualgames.html">CasualGames guide hub overview</a> for more casual puzzle games and level libraries.
+        </p>
+      </section>
+
+      <div class="cta">
+        <h2>Stuck at the bus stop? Watch the solution</h2>
+        <p>Find your board by level number, watch the opening dispatch, then return to the game with a clear route.</p>
+        <a class="btn" href="https://bus-traffic-fever.com/levels" target="_blank" rel="noopener">Visit bus-traffic-fever.com →</a>
+      </div>
+    </main>
+
+    <footer>
+      <div class="wrap">
+        <p>
+          This page is an independent English guide to Bus Traffic Fever!. Solutions and game data come from
+          <a href="https://bus-traffic-fever.com/" target="_blank" rel="noopener">bus-traffic-fever.com</a>.
+        </p>
+        <p>Not an official site. Bus Traffic Fever! and related assets belong to their respective owners.</p>
+      </div>
+    </footer>
+  </body>
+</html>

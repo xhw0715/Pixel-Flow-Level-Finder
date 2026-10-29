@@ -48,10 +48,10 @@
   </head>
   <body>
     <div class="container">
-      <h2>🔍 Find Your Pixel Flow Level (RGB 三通道 pHash)</h2>
+      <h2>🔍 Find Your Pixel Flow Level (RGB Three-Channel pHash)</h2>
       <p>
         Upload a screenshot to match it against our database (2000+ levels).
-        Using RGB 三通道 pHash (768-bit = 192 hex chars) for higher precision
+        Using RGB three-channel pHash (768-bit = 192 hex chars) for higher precision
         and color distinction.
       </p>
       <p>
@@ -66,27 +66,32 @@
 
       <p>
         🎮 CasualGames:
-        <a href="casualgames.html">CasualGames 综合攻略站介绍（七款休闲解谜）</a>
+        <a href="casualgames.html">CasualGames guide hub overview (seven casual puzzle games)</a>
       </p>
 
       <p>
         🐱 Meowdoku guide:
-        <a href="meowdoku.html">Meowdoku 玩法介绍与通关攻略</a>
+        <a href="meowdoku.html">Meowdoku gameplay guide and walkthroughs</a>
       </p>
 
       <p>
         🏖️ Sand Blocks guide:
-        <a href="sand-blocks.html">Sand Blocks: Drop Puzzle 玩法介绍与全关卡攻略</a>
+        <a href="sand-blocks.html">Sand Blocks: Drop Puzzle gameplay guide and all levels</a>
       </p>
 
       <p>
         🐜 Food Hunt guide:
-        <a href="food-hunt.html">Food Hunt: Pixel Puzzle 玩法介绍与全关卡攻略</a>
+        <a href="food-hunt.html">Food Hunt: Pixel Puzzle gameplay guide and all levels</a>
       </p>
 
       <p>
         🧩 Block Out guide:
-        <a href="block-out.html">Block Out! - Color Sort Puzzle 玩法介绍与全关卡攻略</a>
+        <a href="block-out.html">Block Out! - Color Sort Puzzle gameplay guide and all levels</a>
+      </p>
+
+      <p>
+        🚌 Bus Traffic Fever guide:
+        <a href="bus-traffic-fever.html">Bus Traffic Fever! queue-and-bus gameplay guide and all levels</a>
       </p>
 
       <div id="drop-zone">Click or Drag Screenshot Here</div>
@@ -99,8 +104,8 @@
     </div>
 
     <script>
-      // 模拟数据库数据 (Level ID : RGB 三通道 pHash，192 位 16 进制)
-      // 请使用 batch-phash.html 重新生成 RGB 三通道的 pHash 数据
+      // Sample database (Level ID: RGB three-channel pHash, 192 hex characters).
+      // Regenerate the RGB three-channel pHash data with batch-phash.html.
       const DB_HASHES = {
         "level-1007":
           "cae04787b91511c391a11211149c9824a230b01871c0d7033e27eaf14878231eb818ce01b91803c262e0c1e48760cf4207113389c061a156360068a00cc43410bc14d408fab842c5a0da42c28a60874247138b0e0803b0d0425035500dc01042",
@@ -144,27 +149,27 @@
       const dropZone = document.getElementById("drop-zone");
       const fileInput = document.getElementById("file-input");
 
-      // 使用 Blob 创建 inline worker，避免 file:// 协议限制
+      // Use a Blob to create an inline Worker and avoid file:// restrictions.
       const workerCode = `
         self.onmessage = function(e) {
           const { redPixels, greenPixels, bluePixels, size } = e.data;
           
-          // 分别计算 RGB 三个通道的 pHash
+          // Compute a pHash for each RGB channel.
           const hashR = calculatePHash(redPixels, size);
           const hashG = calculatePHash(greenPixels, size);
           const hashB = calculatePHash(bluePixels, size);
           
-          // 组合成完整哈希
+          // Combine the channels into one hash.
           const hash = hashR + hashG + hashB;
 
           self.postMessage({ hash });
         };
 
         function calculatePHash(pixels, size) {
-          // 1. 执行 DCT 变换
+          // 1. Apply the DCT.
           const dctData = applyDCT(pixels, size);
           
-          // 2. 取左上角 16x16 区域 (256 位 pHash)
+          // 2. Keep the top-left 16x16 block (256-bit pHash).
           const rows = 16;
           const cols = 16;
           let lowFreq = [];
@@ -174,13 +179,13 @@
             }
           }
 
-          // 3. 计算均值
+          // 3. Calculate the mean.
           const average = lowFreq.reduce((a, b) => a + b, 0) / lowFreq.length;
 
-          // 4. 生成 256 位二进制哈希
+          // 4. Build the 256-bit binary hash.
           const binaryHash = lowFreq.map(v => (v > average ? "1" : "0")).join("");
           
-          // 5. 转换为 16 进制
+          // 5. Convert to hexadecimal.
           let hexHash = "";
           for (let i = 0; i < binaryHash.length; i += 4) {
             const chunk = binaryHash.substr(i, 4);
@@ -231,11 +236,11 @@
       function processImage(img) {
         const canvas = document.createElement("canvas");
         const ctx = canvas.getContext("2d");
-        const size = 128; // 更大的尺寸保留更多细节
+        const size = 128; // A larger canvas preserves more detail.
         canvas.width = size;
         canvas.height = size;
 
-        // 自适应裁剪：提取中心 75% 区域
+        // Adaptive crop: keep the center 75% of the image.
         const sw = img.width;
         const sh = img.height;
         const cropRatio = 0.75;
@@ -244,10 +249,10 @@
         const sx = (sw - cropW) / 2;
         const sy = (sh - cropH) / 2;
 
-        // 缩放到标准尺寸 128×128
+        // Resize to the standard 128x128 canvas.
         ctx.drawImage(img, sx, sy, cropW, cropH, 0, 0, size, size);
 
-        // 获取 RGB 三通道数据
+        // Read the RGB channel data.
         const imageData = ctx.getImageData(0, 0, size, size).data;
         const redPixels = new Float32Array(size * size);
         const greenPixels = new Float32Array(size * size);
@@ -260,7 +265,7 @@
           bluePixels[idx] = imageData[i + 2];
         }
 
-        // 发送给 Web Worker 计算 pHash
+        // Send the pixel data to the Web Worker.
         worker.postMessage({
           redPixels: redPixels,
           greenPixels: greenPixels,
@@ -281,18 +286,18 @@
           results.push({ levelId, distance });
         }
 
-        // 按相似度排序
+        // Sort by similarity.
         results.sort((a, b) => a.distance - b.distance);
 
-        renderResults(results.slice(0, 5)); // 显示前 5 个最像的
+        renderResults(results.slice(0, 5)); // Show the five closest matches.
       }
 
       function getHammingDistance(h1, h2) {
-        // 16 进制转二进制后计算汉明距离
+        // Convert hexadecimal to binary and calculate the Hamming distance.
         let dist = 0;
         for (let i = 0; i < h1.length; i++) {
           const xor = parseInt(h1[i], 16) ^ parseInt(h2[i], 16);
-          // 计算 xor 结果中 1 的个数
+          // Count the set bits in the XOR result.
           dist += xor.toString(2).split("1").length - 1;
         }
         return dist;

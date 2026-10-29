@@ -2,7 +2,7 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
-// 修复了箭头函数语法 =>
+// Request handler for serving static files.
 const server = http.createServer((req, res) => {
   let filePath = path.join(__dirname, req.url === '/' ? 'index.html' : req.url);
   const ext = path.extname(filePath);
@@ -30,5 +30,5 @@ const server = http.createServer((req, res) => {
 
 const PORT = 8000;
 server.listen(PORT, () => {
-  console.log(`服务器运行中：http://localhost:${PORT}`);
+  console.log(`Server running at http://localhost:${PORT}`);
 });

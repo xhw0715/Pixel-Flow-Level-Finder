@@ -15,35 +15,35 @@
     "vue": "html",
     "wpy": "html"
   },
-  //主题颜色
+  // Theme
   "git.confirmSync": false,
   "explorer.confirmDelete": false,
   "editor.fontSize": 15,
   "window.zoomLevel": 1,
   "editor.wordWrap": "on",
   "editor.detectIndentation": false,
-  // 重新设定tabsize
+  // Reset tab size
   "editor.tabSize": 2,
-  // #值设置为true时，每次保存的时候自动格式化；
+  // Format on save when enabled.
   "editor.formatOnSave": true,
-  // 粘贴时格式化代码
+  // Format pasted code.
   "editor.formatOnPaste": true,
-  // typescript文件格式化
+  // TypeScript file formatting.
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  // javascript文件格式化
+  // JavaScript file formatting.
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  // vue文件格式化
+  // Vue file formatting.
   "[vue]": {
     "editor.defaultFormatter": "Vue.volar"
   },
   "[typescriptreact]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  // vue文件格式化
+  // HTML file formatting.
   "[html]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },

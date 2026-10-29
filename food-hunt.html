@@ -1,12 +1,12 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Food Hunt: Pixel Puzzle 是什么？蚂蚁啃食像素玩法、规则与全关卡攻略</title>
+    <title>What Is Food Hunt: Pixel Puzzle? Ant Gameplay, Rules, and Full Level Guide</title>
     <meta
       name="description"
-      content="Food Hunt: Pixel Puzzle 是一款放出蚂蚁啃光同色像素的休闲解谜游戏。本文介绍核心玩法、点击顺序技巧、难度分级，并提供 1,190 关完整视频攻略与分步图文讲解：food-hunt.org。"
+      content="Food Hunt: Pixel Puzzle is a casual game where you release ants to eat every pixel of the same color. Learn the rules, tap-order strategy, and difficulty tiers, with 1,190 video walkthroughs at food-hunt.org."
     />
     <meta name="theme-color" content="#16a34a" />
     <link rel="canonical" href="https://food-hunt.org/" />
@@ -22,29 +22,17 @@
         --line: #d7efdc;
         --shadow: 0 6px 24px rgba(21, 128, 61, 0.08);
       }
-      * {
-        box-sizing: border-box;
-      }
-      html {
-        scroll-behavior: smooth;
-      }
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
       body {
         margin: 0;
         background: var(--bg);
         color: var(--ink);
-        font-family:
-          -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei",
-          "Segoe UI", Roboto, Arial, sans-serif;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
         line-height: 1.75;
       }
-      a {
-        color: var(--brand-dark);
-      }
-      .wrap {
-        max-width: 960px;
-        margin: 0 auto;
-        padding: 0 20px;
-      }
+      a { color: var(--brand-dark); }
+      .wrap { max-width: 960px; margin: 0 auto; padding: 0 20px; }
       header.top {
         position: sticky;
         top: 0;
@@ -60,6 +48,7 @@
         gap: 12px;
         height: 64px;
       }
+      header.top .btn { white-space: nowrap; }
       .logo {
         display: flex;
         align-items: center;
@@ -68,12 +57,9 @@
         font-size: 17px;
         color: var(--ink);
         text-decoration: none;
+        white-space: nowrap;
       }
-      .logo span {
-        background: var(--brand-soft);
-        border-radius: 4px;
-        padding: 0 6px;
-      }
+      .logo span { background: var(--brand-soft); border-radius: 4px; padding: 0 6px; }
       .btn {
         display: inline-block;
         border-radius: 10px;
@@ -83,23 +69,10 @@
         text-decoration: none;
         transition: transform 0.15s ease, box-shadow 0.15s ease;
       }
-      .btn:active {
-        transform: translateY(1px);
-      }
-      .btn-primary {
-        background: var(--brand);
-        color: #fff;
-        box-shadow: var(--shadow);
-      }
-      .btn-ghost {
-        background: #fff;
-        color: var(--brand-dark);
-        border: 1px solid var(--line);
-      }
-      .hero {
-        text-align: center;
-        padding: 64px 0 40px;
-      }
+      .btn:active { transform: translateY(1px); }
+      .btn-primary { background: var(--brand); color: #fff; box-shadow: var(--shadow); }
+      .btn-ghost { background: #fff; color: var(--brand-dark); border: 1px solid var(--line); }
+      .hero { text-align: center; padding: 64px 0 40px; }
       .hero .kicker {
         display: inline-block;
         font-size: 14px;
@@ -110,60 +83,18 @@
         padding: 4px 14px;
         margin-bottom: 18px;
       }
-      .hero h1 {
-        font-size: clamp(28px, 5vw, 44px);
-        line-height: 1.25;
-        margin: 0 0 16px;
-      }
-      .hero p {
-        color: var(--muted);
-        font-size: 17px;
-        max-width: 720px;
-        margin: 0 auto 28px;
-      }
-      .hero .actions {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 12px;
-        justify-content: center;
-      }
-      section {
-        padding: 32px 0;
-      }
-      h2 {
-        font-size: clamp(22px, 3.5vw, 30px);
-        margin: 0 0 8px;
-      }
-      .lead {
-        color: var(--muted);
-        margin: 0 0 24px;
-      }
-      .grid {
-        display: grid;
-        gap: 16px;
-      }
-      .grid-3 {
-        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      }
-      .grid-2 {
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      }
-      .card {
-        background: var(--card);
-        border: 1px solid var(--line);
-        border-radius: 14px;
-        padding: 20px;
-        box-shadow: var(--shadow);
-      }
-      .card h3 {
-        margin: 0 0 8px;
-        font-size: 17px;
-      }
-      .card p {
-        margin: 0;
-        color: var(--muted);
-        font-size: 15px;
-      }
+      .hero h1 { font-size: clamp(28px, 5vw, 44px); line-height: 1.25; margin: 0 0 16px; }
+      .hero p { color: var(--muted); font-size: 17px; max-width: 720px; margin: 0 auto 28px; }
+      .hero .actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+      section { padding: 32px 0; }
+      h2 { font-size: clamp(22px, 3.5vw, 30px); margin: 0 0 8px; }
+      .lead { color: var(--muted); margin: 0 0 24px; }
+      .grid { display: grid; gap: 16px; }
+      .grid-3 { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+      .grid-2 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+      .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 20px; box-shadow: var(--shadow); }
+      .card h3 { margin: 0 0 8px; font-size: 17px; }
+      .card p { margin: 0; color: var(--muted); font-size: 15px; }
       .card .num {
         display: inline-flex;
         align-items: center;
@@ -177,97 +108,32 @@
         font-size: 15px;
         margin-bottom: 10px;
       }
-      ul.plain {
-        margin: 0;
-        padding-left: 20px;
-        color: var(--muted);
-      }
-      ul.plain li {
-        margin-bottom: 6px;
-      }
-      ul.plain strong {
-        color: var(--ink);
-      }
-      .stats {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-        gap: 16px;
-        text-align: center;
-      }
-      .stat {
-        background: var(--card);
-        border: 1px solid var(--line);
-        border-radius: 14px;
-        padding: 16px 12px;
-        box-shadow: var(--shadow);
-      }
-      .stat b {
-        display: block;
-        font-size: 22px;
-        color: var(--brand-dark);
-      }
-      .stat span {
-        font-size: 14px;
-        color: var(--muted);
-      }
-      details {
-        background: var(--card);
-        border: 1px solid var(--line);
-        border-radius: 12px;
-        padding: 14px 18px;
-        margin-bottom: 10px;
-      }
-      details summary {
-        cursor: pointer;
-        font-weight: 600;
-        list-style: none;
-      }
-      details summary::-webkit-details-marker {
-        display: none;
-      }
-      details summary::before {
-        content: "＋ ";
-        color: var(--brand);
-        font-weight: 700;
-      }
-      details[open] summary::before {
-        content: "－ ";
-      }
-      details p {
-        margin: 10px 0 0;
-        color: var(--muted);
-      }
+      .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 16px; text-align: center; }
+      .stat { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 16px 12px; box-shadow: var(--shadow); }
+      .stat b { display: block; font-size: 22px; color: var(--brand-dark); }
+      .stat span { font-size: 14px; color: var(--muted); }
+      details { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px 18px; margin-bottom: 10px; }
+      details summary { cursor: pointer; font-weight: 600; list-style: none; }
+      details summary::-webkit-details-marker { display: none; }
+      details summary::before { content: "+ "; color: var(--brand); font-weight: 700; }
+      details[open] summary::before { content: "- "; }
+      details p { margin: 10px 0 0; color: var(--muted); }
       .cta {
-        background: linear-gradient(135deg, #16a34a, #65a30d);
+        background: linear-gradient(135deg, #15803d, #22c55e);
         border-radius: 18px;
         padding: 36px 24px;
         text-align: center;
         color: #fff;
         margin: 24px 0 8px;
       }
-      .cta h2 {
-        color: #fff;
-        margin-bottom: 10px;
-      }
-      .cta p {
-        margin: 0 auto 22px;
-        max-width: 620px;
-        opacity: 0.95;
-      }
-      .cta .btn {
-        background: #fff;
-        color: var(--brand-dark);
-      }
-      footer {
-        border-top: 1px solid var(--line);
-        margin-top: 40px;
-        padding: 28px 0 40px;
-        color: var(--muted);
-        font-size: 14px;
-        text-align: center;
-      }
-      footer a {
-        color: var(--brand-dark);
+      .cta h2 { color: #fff; margin-bottom: 10px; }
+      .cta p { margin: 0 auto 22px; max-width: 620px; opacity: 0.95; }
+      .cta .btn { background: #fff; color: var(--brand-dark); }
+      footer { border-top: 1px solid var(--line); margin-top: 40px; padding: 28px 0 40px; color: var(--muted); font-size: 14px; text-align: center; }
+      footer a { color: var(--brand-dark); }
+      @media (max-width: 480px) {
+        header.top .btn { padding: 8px 12px; font-size: 13px; }
+        .logo { font-size: 15px; }
       }
     </style>
   </head>
@@ -277,280 +143,223 @@
         <a class="logo" href="https://food-hunt.org/" target="_blank" rel="noopener">
           🐜 Food Hunt <span>Guide</span>
         </a>
-        <a
-          class="btn btn-primary"
-          href="https://food-hunt.org/levels"
-          target="_blank"
-          rel="noopener"
-          >查看全部攻略</a
-        >
+        <a class="btn btn-primary" href="https://food-hunt.org/levels" target="_blank" rel="noopener">Solutions</a>
       </div>
     </header>
 
     <main class="wrap">
       <div class="hero">
-        <div class="kicker">蚂蚁啃食像素 · 免费解谜</div>
-        <h1>Food Hunt: Pixel Puzzle 是什么？<br />点一种颜色，放一群蚂蚁，把像素吃得干干净净</h1>
+        <div class="kicker">Pixel-eating ants · Free puzzle</div>
+        <h1>What Is Food Hunt: Pixel Puzzle?<br />Tap a color, release the ants, and eat every pixel clean</h1>
         <p>
-          Food Hunt: Pixel Puzzle 是一款<strong>免费的手机休闲解谜游戏</strong>。棋盘是一幅像素美食画，
-          你每点一种颜色，就会放出一群<strong>同色的蚂蚁</strong>，它们会沿着画面前进，
-          把该颜色的像素一口口吃光。规则简单到不用教程，但点击顺序一旦排错，某些颜色就会被困在角落——
-          每一关，都是一次关于顺序的规划练习。
+          Food Hunt: Pixel Puzzle is a <strong>free mobile casual puzzle</strong>.
+          The board is a pixel-art food scene. Tap any color to release a swarm of
+          <strong>matching ants</strong>, then watch them cross the picture and eat every pixel of that color.
+          The rule takes no tutorial, but a bad tap order can trap a color in a corner.
+          Every level is a small exercise in planning the next move.
         </p>
         <div class="actions">
-          <a
-            class="btn btn-primary"
-            href="https://food-hunt.org/"
-            target="_blank"
-            rel="noopener"
-            >进入 Food Hunt Guide →</a
-          >
-          <a
-            class="btn btn-ghost"
-            href="https://food-hunt.org/levels"
-            target="_blank"
-            rel="noopener"
-            >按关卡号查答案</a
-          >
+          <a class="btn btn-primary" href="https://food-hunt.org/" target="_blank" rel="noopener">Open the Food Hunt Guide →</a>
+          <a class="btn btn-ghost" href="https://food-hunt.org/levels" target="_blank" rel="noopener">Find a level solution</a>
         </div>
       </div>
 
       <section>
-        <h2>核心玩法：点色、放蚁、吃光</h2>
-        <p class="lead">三句话讲完规则，剩下的全是点击顺序。</p>
+        <h2>Core gameplay: tap a color, release ants, clear the board</h2>
+        <p class="lead">The rules are simple. The tap order is the real puzzle.</p>
         <div class="grid grid-3">
           <div class="card">
             <div class="num">1</div>
-            <h3>点一种颜色</h3>
-            <p>点击棋盘上任一颜色的像素，就会释放出与之匹配的蚂蚁群落，从画面外涌入棋盘。</p>
+            <h3>Tap one color</h3>
+            <p>Tap any colored pixel to release a matching ant colony from outside the board.</p>
           </div>
           <div class="card">
             <div class="num">2</div>
-            <h3>蚂蚁吃掉同色像素</h3>
-            <p>蚁群会一路前进，啃光所有和它颜色相同的食物像素，直到该颜色彻底消失。</p>
+            <h3>The ants eat matching pixels</h3>
+            <p>The swarm moves across the picture and consumes every food pixel of its own color until none remain.</p>
           </div>
           <div class="card">
             <div class="num">3</div>
-            <h3>清空全部颜色</h3>
-            <p>当棋盘上每一种颜色都被吃干净、不留一点残渣，这一关就算通关。</p>
+            <h3>Clear every color</h3>
+            <p>Finish the level by removing every color from the board without leaving any pixels behind.</p>
           </div>
         </div>
       </section>
 
       <section>
-        <h2>四步上手：新手也能顺畅通关</h2>
+        <h2>Four steps for a clean clear</h2>
         <div class="grid grid-2">
           <div class="card">
             <div class="num">1</div>
-            <h3>先扫一遍这顿大餐</h3>
-            <p>动手之前，先找出所有颜色和它们各自最大的色块。十秒钟的观察，能省下大半次重开。</p>
+            <h3>Scan the whole picture</h3>
+            <p>Before tapping, find every color and its largest cluster. Ten seconds of observation can save most of a restart.</p>
           </div>
           <div class="card">
             <div class="num">2</div>
-            <h3>先清最大的色块</h3>
-            <p>像素最多的颜色清起来最久，早点放它出去，能为后面需要空间的蚁群腾出最多余地。</p>
+            <h3>Clear the largest block first</h3>
+            <p>The color with the most pixels takes longest to clear. Send it out early to leave more room for the swarms that follow.</p>
           </div>
           <div class="card">
             <div class="num">3</div>
-            <h3>让蚁群依次出动</h3>
-            <p>按顺序释放每一群蚂蚁，让每种颜色都干净利落地被扫光；被挡住的颜色，要等前面的先让路。</p>
+            <h3>Release one swarm at a time</h3>
+            <p>Let each color finish before starting the next. If one color is blocked, clear the color in front of it first.</p>
           </div>
           <div class="card">
             <div class="num">4</div>
-            <h3>吃掉最后一点残渣</h3>
-            <p>最后一个像素被吃掉即通关。卡住时就去看攻略视频，换个顺序用新的思路再试一次。</p>
+            <h3>Eat the last pixels</h3>
+            <p>The level ends when the last pixel is gone. If you get stuck, watch the solution and retry with a new order.</p>
           </div>
         </div>
       </section>
 
       <section>
-        <h2>游戏特色与功能</h2>
-        <p class="lead">轻松、离线、无压力，但难度上限一点也不低。</p>
+        <h2>Features and game mechanics</h2>
+        <p class="lead">Relaxing, offline, and pressure-free, but the later boards still demand planning.</p>
         <div class="grid grid-2">
           <div class="card">
-            <h3>🐜 蚂蚁群扫食，看着就解压</h3>
-            <p>一群同色蚂蚁涌入画面、把对应像素啃得干干净净，视觉反馈非常爽快，玩起来毫无压力。</p>
+            <h3>🐜 Satisfying ant swarms</h3>
+            <p>A colony pours into the picture and strips a color clean. The feedback is playful and the pace stays relaxed.</p>
           </div>
           <div class="card">
-            <h3>🎨 像素美食主题</h3>
-            <p>每一关都是一幅像素画，把“吃”这件小事做得可爱又精致，越玩越有收集欲。</p>
+            <h3>🎨 Pixel-food theme</h3>
+            <p>Each level is a small pixel illustration, turning the idea of eating into a cute and collectible visual puzzle.</p>
           </div>
           <div class="card">
-            <h3>⏱️ 没有计时，没有步数限制</h3>
-            <p>游戏不设倒计时，也没有“只能点几次”的限制，你可以先想清楚顺序再动手。</p>
+            <h3>⏱️ No timer or move limit</h3>
+            <p>There is no countdown and no tap budget. Take as long as you need to plan the next color.</p>
           </div>
           <div class="card">
-            <h3>📶 完全离线可玩</h3>
-            <p>安装后每一关都是自成一体的，正常游戏过程中不需要联网，通勤路上也能随时来一局。</p>
+            <h3>📶 Fully offline</h3>
+            <p>Installed levels play without an internet connection, so a commute is enough time for a few boards.</p>
           </div>
           <div class="card">
-            <h3>📈 四种难度，关卡够多</h3>
-            <p>从 Beginner 到 Expert 四个难度档位，攻略站目前已经为其中 1,190 关提供完整视频演示。</p>
+            <h3>📈 Four difficulty tiers</h3>
+            <p>Beginner through Expert boards raise the color count and interlock the routes. The guide covers 1,190 levels with video.</p>
           </div>
           <div class="card">
-            <h3>🆓 免费下载</h3>
-            <p>Android 平台免费获取，通过广告与可选内购支持开发，但不付费同样可以通关所有关卡。</p>
+            <h3>🆓 Free download</h3>
+            <p>Available free on Android, with ads and optional purchases supporting development. You can still finish every level without paying.</p>
           </div>
         </div>
       </section>
 
       <section>
-        <h2>高手技巧：卡关时先看这里</h2>
+        <h2>Expert tips for a stuck board</h2>
         <div class="grid grid-2">
           <div class="card">
-            <h3>最大优先</h3>
-            <p>永远先清最大的色块，再处理小块。它能让棋盘保持开阔，留给真正需要空间的蚁群。</p>
+            <h3>Largest cluster first</h3>
+            <p>Clear the biggest color block before the small pieces. It keeps the board open for the swarms that need space.</p>
           </div>
           <div class="card">
-            <h3>别急着点散落的碎屑</h3>
-            <p>零散的颜色不要提前点，等棋盘打开之后，再一次性把它的像素全部扫光。</p>
+            <h3>Wait on scattered pixels</h3>
+            <p>Do not tap a scattered color too early. Open the board first, then sweep all of its pixels in one clean run.</p>
           </div>
           <div class="card">
-            <h3>点一次，清一片</h3>
-            <p>花几秒规划顺序，能省下几分钟的零散点击。动手前先确认哪些颜色会互相挡路。</p>
+            <h3>One tap, one clear</h3>
+            <p>A few seconds of planning can save minutes of scattered tapping. Check which colors block each other before you start.</p>
           </div>
           <div class="card">
-            <h3>卡住就重开</h3>
-            <p>点了四五次还没头绪？直接重开。一张干净的棋盘，永远比纠缠在一起的残渣更快。</p>
+            <h3>Restart when it jams</h3>
+            <p>If four or five taps leave no clear route, restart. A clean board is faster than untangling leftover pixels.</p>
           </div>
         </div>
       </section>
 
       <section>
-        <h2>常见问题</h2>
+        <h2>Frequently asked questions</h2>
         <details open>
-          <summary>Food Hunt: Pixel Puzzle 怎么玩？</summary>
-          <p>
-            点击一种颜色，就会释放出对应的蚂蚁群落，它们会扫过棋盘、吃光所有该颜色的食物像素。
-            当所有颜色都被清除，这一关就完成了。游戏没有计时，也没有步数限制，所以每一步都可以慢慢规划。
-          </p>
+          <summary>How do you play Food Hunt: Pixel Puzzle?</summary>
+          <p>Tap a color to release matching ants. They cross the board and eat every food pixel of that color. Clear all colors to finish; there is no timer or move limit.</p>
         </details>
         <details>
-          <summary>Food Hunt: Pixel Puzzle 免费吗？</summary>
-          <p>免费。Android 平台可以直接免费下载，通过广告和可选内购支持开发，但不付费也能通关全部关卡。</p>
+          <summary>Is Food Hunt free?</summary>
+          <p>Yes. The game is free on Android, supported by ads and optional purchases. You can finish every level without paying.</p>
         </details>
         <details>
-          <summary>一共多少个关卡？</summary>
-          <p>
-            游戏内置数百个关卡，分为 Beginner、Intermediate、Advanced、Expert 四个难度档位。
-            攻略站目前已经为其中 1,190 关提供完整的视频通关演示与分步图文讲解，并会持续更新。
-          </p>
+          <summary>How many levels are there?</summary>
+          <p>The game has hundreds of levels across Beginner, Intermediate, Advanced, and Expert tiers. The guide currently has 1,190 complete video walkthroughs and written step-by-step notes.</p>
         </details>
         <details>
-          <summary>卡关时去哪里找答案？</summary>
-          <p>
-            可以前往
-            <a href="https://food-hunt.org/levels" target="_blank" rel="noopener"
-              >Food Hunt Guide 的关卡库</a
-            >，按关卡号直接搜索。每个关卡都配有完整的 YouTube 视频演示，以及一份针对该关卡的分步文字攻略。
-          </p>
+          <summary>Where can I find a level answer?</summary>
+          <p>Search the <a href="https://food-hunt.org/levels" target="_blank" rel="noopener">Food Hunt Guide level library</a> by level number. Each page has a YouTube walkthrough and a written tap order.</p>
         </details>
         <details>
-          <summary>为什么我总是在同一关卡住？</summary>
-          <p>
-            大多数卡死，都是因为太早点动某一种颜色，把另一种颜色的像素困在了角落。
-            在高难关卡里，先清最大的色块、把分散的颜色留到最后；当两种颜色互相挡路时，先清掉挡路的那一个。
-          </p>
+          <summary>Why do I keep getting stuck on the same level?</summary>
+          <p>Most dead boards come from tapping a color too early and trapping another color in a corner. Clear the largest block first, leave scattered colors for later, and remove the blocking color before opening a new front.</p>
         </details>
         <details>
-          <summary>可以离线玩吗？</summary>
-          <p>可以。安装后 Food Hunt: Pixel Puzzle 完全支持离线游玩，正常游戏过程中不需要联网。</p>
+          <summary>Does Food Hunt work offline?</summary>
+          <p>Yes. After installation, normal play works without an internet connection.</p>
         </details>
       </section>
 
       <section>
-        <h2>Food Hunt Guide 能帮你什么</h2>
+        <h2>What the Food Hunt Guide covers</h2>
         <p class="lead">
           <a href="https://food-hunt.org/" target="_blank" rel="noopener">food-hunt.org</a>
-          是由玩家制作的非官方攻略站，覆盖关卡答案、点击顺序、视频演示与进阶策略。
+          is a fan-made guide with level answers, tap order, video walkthroughs, and advanced strategy.
         </p>
         <div class="stats">
-          <div class="stat"><b>1,190</b><span>视频通关关卡</span></div>
-          <div class="stat"><b>100 关</b><span>一组，快速跳转</span></div>
-          <div class="stat"><b>免费</b><span>无需注册即可查看</span></div>
-          <div class="stat"><b>视频 + 分步</b><span>照着点就能过</span></div>
+          <div class="stat"><b>1,190</b><span>Video walkthroughs</span></div>
+          <div class="stat"><b>100 levels</b><span>Per navigation block</span></div>
+          <div class="stat"><b>Free</b><span>No registration required</span></div>
+          <div class="stat"><b>Video + steps</b><span>Clear with confidence</span></div>
         </div>
         <div class="grid grid-3" style="margin-top: 16px">
           <div class="card">
-            <h3>关卡库</h3>
-            <p>
-              按关卡号查找对应的棋盘，
-              <a href="https://food-hunt.org/levels" target="_blank" rel="noopener">前往关卡库 →</a>
-            </p>
+            <h3>Level library</h3>
+            <p>Find a board by level number. <a href="https://food-hunt.org/levels" target="_blank" rel="noopener">Open the level library →</a></p>
           </div>
           <div class="card">
-            <h3>精选关卡</h3>
-            <p>
-              玩家搜索最多的热门关卡合集，
-              <a href="https://food-hunt.org/featured" target="_blank" rel="noopener">查看精选攻略 →</a>
-            </p>
+            <h3>Featured levels</h3>
+            <p>The boards players search for most. <a href="https://food-hunt.org/featured" target="_blank" rel="noopener">Browse featured solutions →</a></p>
           </div>
           <div class="card">
-            <h3>攻略博客</h3>
-            <p>
-              点击顺序、难度曲线与常见错误解析，
-              <a href="https://food-hunt.org/blog" target="_blank" rel="noopener">阅读攻略文章 →</a>
-            </p>
+            <h3>Strategy blog</h3>
+            <p>Tap order, difficulty curves, and common mistakes. <a href="https://food-hunt.org/blog" target="_blank" rel="noopener">Read the guide articles →</a></p>
           </div>
         </div>
       </section>
 
       <section>
-        <h2>同类攻略</h2>
+        <h2>More puzzle guides</h2>
         <div class="grid grid-3">
           <div class="card">
             <h3>🏖️ Sand Blocks: Drop Puzzle</h3>
-            <p>
-              拉动彩色沙块填满凹槽的物理流沙解谜，
-              <a href="sand-blocks.html">查看 Sand Blocks 玩法介绍与攻略 →</a>
-            </p>
+            <p>Pull colored sand into matching slots. <a href="sand-blocks.html">Read the Sand Blocks guide →</a></p>
           </div>
           <div class="card">
             <h3>🐱 Meowdoku</h3>
-            <p>
-              把数独约束和扫雷式推理结合的猫咪逻辑解谜，
-              <a href="meowdoku.html">查看 Meowdoku 玩法介绍与攻略 →</a>
-            </p>
+            <p>A cat-themed logic puzzle with Sudoku constraints. <a href="meowdoku.html">Read the Meowdoku guide →</a></p>
           </div>
           <div class="card">
             <h3>🧩 Block Out! - Color Sort Puzzle</h3>
-            <p>
-              把彩色方块滑进同色出口、绕开移动机关的滑块解谜，
-              <a href="block-out.html">查看 Block Out 玩法介绍与攻略 →</a>
-            </p>
+            <p>Slide colored blocks into matching doors. <a href="block-out.html">Read the Block Out guide →</a></p>
+          </div>
+          <div class="card">
+            <h3>🚌 Bus Traffic Fever!</h3>
+            <p>Match passengers to colored buses and keep a station slot open. <a href="bus-traffic-fever.html">Read the Bus Traffic Fever guide →</a></p>
           </div>
         </div>
         <p class="lead" style="margin-top: 16px">
-          这一类轻解谜还有不少同门作品。想一次看全的话，
-          <a href="https://mobilecasualgames.com/" target="_blank" rel="noopener noreferrer"
-            >mobilecasualgames.com 的休闲游戏合集</a
-          >
-          把 Food Hunt、Sand Blocks、Meowdoku 的玩法介绍、关卡目录和更新资讯归到了一处，按玩法标签就能横向挑下一款。
+          For more casual puzzles, browse the <a href="https://mobilecasualgames.com/" target="_blank" rel="noopener noreferrer">CasualGames directory</a>, which groups Food Hunt, Sand Blocks, Meowdoku, and other titles by genre.
         </p>
       </section>
 
       <div class="cta">
-        <h2>卡在某一关？直接看点击顺序</h2>
-        <p>
-          每个关卡都配有完整的视频演示与分步图文讲解，照着点击就能过。先按关卡号搜一搜，再回棋盘重试。
-        </p>
-        <a
-          class="btn"
-          href="https://food-hunt.org/levels"
-          target="_blank"
-          rel="noopener"
-          >访问 food-hunt.org →</a
-        >
+        <h2>Stuck on a level? Follow the tap order</h2>
+        <p>Each solution includes a full video and step-by-step notes. Find your level, watch the route, then return to the board.</p>
+        <a class="btn" href="https://food-hunt.org/levels" target="_blank" rel="noopener">Visit food-hunt.org →</a>
       </div>
     </main>
 
     <footer>
       <div class="wrap">
         <p>
-          本页为 Food Hunt: Pixel Puzzle 玩法与功能的中文介绍，攻略内容来自
-          <a href="https://food-hunt.org/" target="_blank" rel="noopener">food-hunt.org</a>。
+          This page is an independent English guide to Food Hunt: Pixel Puzzle. Solutions and game data come from
+          <a href="https://food-hunt.org/" target="_blank" rel="noopener">food-hunt.org</a>.
         </p>
-        <p>非官方网站，Food Hunt: Pixel Puzzle 及其相关素材版权归各自所有者所有。</p>
+        <p>Not an official site. Food Hunt: Pixel Puzzle and related assets belong to their respective owners.</p>
       </div>
     </footer>
   </body>
